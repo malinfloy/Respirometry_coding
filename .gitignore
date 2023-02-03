@@ -2,4 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
-Respirometry data/
+Respirometry_data/
+.Rdata
+.httr-oauth
+.DS_Store
