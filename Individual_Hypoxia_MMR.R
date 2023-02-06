@@ -296,7 +296,6 @@ ch4_H_mmr_2FP <- ch4_t2_rep_2 |>                            # using the inspecte
 
 # MMR Trial 5 - ----------------------------------------------------------------
 # Chamber 1 7ml
-#swimtunnel note on ch1 and ch3
 ch1_t5_rep_2 <- subset_data(t5,
                             from = 39154, # 0811
                             to = 39154 + 870, 
