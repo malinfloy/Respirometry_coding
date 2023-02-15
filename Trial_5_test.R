@@ -413,7 +413,7 @@ ch1_N_smr_7mL <- t5 |>
     measure = 600, # 10 min
     method = "lowest",
     width = 300,   # extract lowest rate from a 5-min duration
-    by = "time") |>
+    by = "time") |>  # Switched to time, works fine here.
   
   #Adjust the rates
   adjust_rate(
@@ -468,8 +468,10 @@ ch2_N_smr_7mb <- t5 |>
   mean()
 
 # Chamber 3 7fb
+
+# I can't see how I'm subsetting wrong, even when i use row and time. I use my num_time_ch3 when i reference time
 ch3_N_smr_7Fb <- t5 |>
-  subset_data(from = 2952, 
+  subset_data(from = 2953, 
               to = 65958, # 70 cycles after 
               by = "time") |>
   inspect(time= 8, oxygen = 7) |>
