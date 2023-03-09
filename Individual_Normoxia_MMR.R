@@ -203,7 +203,8 @@ ch2_N_mmr_2Mb <- ch2_t2_rep_1 |>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05758, 
-               t =25 , S = 0, mass = 0.00009) |>
+               t =25 , S = 0, 
+               mass = 0.00009) |>
 # select highest rate
   select_rate(method = "highest", 
               n = 1) |>                     
@@ -530,7 +531,7 @@ ch4_t6_rep_1 <- subset_data(t6,
 
 
 
-ch4_N_mmr_7Fg <- ch4_t5_rep_1 |>                              
+ch4_N_mmr_7Fg <- ch4_t6_rep_1 |>                              
   # subset first replicate
   subset_data(from = 60, # 2 min wait period 
               to = 450,  # 15 min later 
