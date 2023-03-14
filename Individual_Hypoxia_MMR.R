@@ -1,2861 +1,459 @@
-#MMR for all individuals of intermitten-flow repsirometry - Hypoxia
-#1 row = 2 seconds -> 30 rows = 1 min
+#MMR for all individuals of intermitten-flow repsirometry - hypoxia
+# function for mmr under normoxia
 
-# MMR Trial 1 - ----------------------------------------------------
+mmr_h_func <-function(data,start,end,oxygen,plot_width,id,from,to,from1, 
+                      rate_width,bg,v,t,m, ...)
+{rep_1 <- subset_data(data,
+                      from = start,
+                      to = end, 
+                      by = "row") |> 
+  inspect(time= 3, oxygen = oxygen) |> 
+  plot(width = plot_width) 
 
-# Chamber 1 2ml
-ch1_t1_rep_2 <- subset_data(t1,
-                            from = 39479, # MMR start 0820
-                            to = 39479 + 600, # + 20 min 
-                            by = "row") |> 
-  inspect(time= 2, oxygen = 1) |> 
-  plot(width = 0.15) 
-
-
-ch1_H_mmr_2ML <- ch1_t1_rep_2 |> 
+id <- rep_1 |> 
   # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 10 min later 
+  subset_data(from = from, 
+              to = to,  
               by = "row") |>                
-  
   # subset again to apply a 'wait' period
-  subset_data(from = 30, 
+  subset_data(from = from1, 
               by = "row") |>                
-  
   # use auto_rate to get most linear regions
-  auto_rate(width = 0.15) |>                 
+  auto_rate(width = rate_width) |>
   # adjust
-  adjust_rate(by = bgch4_pre, 
-              by2 = bgch4_post, 
-              method = "linear") |>         
+  adjust_rate(by = bg, 
+              method = "value") |>
   # convert
   convert_rate(oxy.unit = "%Air", 
                time.unit = "secs", 
                output.unit = "mg/h/g", 
-               volume = 0.05643, 
-               t =25.1, S = 0, 
-               mass = 0.00014) |>            
+               volume = v, 
+               t =t, S = 0, 
+               mass = m) |>            
   # select highest rate
   select_rate(method = "highest", 
               n = 1) |>                      
   summary(export = TRUE)
+}
+
+#needs to be fixed, wrong bg!! trial 1-4!!! now without bg!!!! and t10,13,14,17,21,22
+
+# Trial 1----------------------------------------------------
+#chamber 1 2ml
+Hmmr_2ml <- mmr_h_func(t1,39479,39479 + 600,4,0.15,Hmmr_2ml, 
+                       30,450,30,0.15,
+                       0.05643,25.1,0.00014)
+# Chamber 2 2mg 
+Hmmr_2mg <- mmr_h_func(data = t1,start = 39809,end = 39809 + 450,oxygen = 22,plot_widt=0.15,
+                       id= Hmmr_2mg, from= 30,to= 450,from1 =30,rate_width=0.15,
+                       v=0.05760,t=25.1,m=0.00007)
 
 
-# Chamber 2 2mg
-ch2_t1_rep_2 <- subset_data(t1,
-                            from = 39809, # 0831
-                            to = 39809 + 450, # 15 min last fish 
-                            by = "row") |> 
-  inspect(time= 5, oxygen = 4) |> 
-  plot(width = 0.15) 
+# Chamber 3 2fg 
+Hmmr_2fg <- mmr_h_func(data = t1,start = 39659,end = 39659 + 600,oxygen = 40,plot_widt=0.2,
+                       id= Hmmr_2fg, from= 30,to= 450,from1 =30,rate_width=0.2,
+                       v=0.05908,t=25.1,m=0.00025)
 
+# chamber 4 2fl 
+Hmmr_2fl <- mmr_h_func(data = t1,start = 39329,end = 39329 + 600,oxygen = 58,plot_widt=0.2,
+                       id= Hmmr_2fg, from= 60,to= 450,from1 =60,rate_width=0.2,
+                       v=0.05982,t=25.2,m=0.00051)
 
-ch2_H_mmr_2MB <- ch2_t1_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 300,  # 10 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.15) |>                 
-  # adjust
-  adjust_rate(by = bgch4_pre, 
-              by2 = bgch4_post, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05760, 
-               t =25.1, S = 0, 
-               mass = 0.00007) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
-
-
-# Chamber 3 2fg
-
-ch3_t1_rep_2 <- subset_data(t1,
-                            from = 39659, # 0826
-                            to = 39659 + 600, 
-                            by = "row") |> 
-  inspect(time= 8, oxygen = 7) |> 
-  plot(width = 0.2)  
-
-ch3_H_mmr_2Fg <- ch3_t1_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bgch4_pre, 
-              by2 = bgch4_post, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05908, 
-               t =25.1, S = 0, 
-               mass = 0.00025) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
-
-# chamber 4 2fl
-ch4_t1_rep_2 <- subset_data(t1,
-                            from = 39329,
-                            to = 39329 + 600 - 150, 
-                            by =  "row") |> 
-  inspect(time = 11, oxygen =10 ) |>       
-  plot(width= 0.2) 
-
-
-
-ch4_H_mmr_2FP <- ch4_t1_rep_2 |>                              
-  # subset first replicate
-  subset_data(from = 60, # 2 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>               
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 60, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                
-  # adjust
-  adjust_rate(by = bgch4_pre, 
-              by2 = bgch4_post, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05982, 
-               t =25.2, S = 0, 
-               mass = 0.00051) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE) 
-
-
-
-# MMR for trial 2 -  -----------------------------------------------
+# MMR Trial 2-----------------------------------------------
 # Chamber 1 2mp
-ch1_t2_rep_2 <- subset_data(t2,
-                            from = 40078, # 0832
-                            to = 40078 + 600, 
-                            by = "row") |> 
-  inspect(time= 2, oxygen = 1) |> 
-  plot(width = 0.15) 
+Hmmr_2mp <- mmr_h_func(data = t2,start = 40078,end = 40078 + 600,oxygen = 4,plot_widt=0.15,
+                       id= Hmmr_2mp, from= 30,to= 450,from1 =30,rate_width=0.15,
+                       v=0.05644,t=25.1,m=0.00013)
+# Chamber 2 2mb 
+Hmmr_2mb <- mmr_h_func(data = t2,start = 40438,end = 40438 + 570,oxygen = 22,plot_widt=0.15,
+                       id= Hmmr_2mb, from= 30,to= 450,from1 =30,rate_width=0.15,
+                       v=0.05758,t=25.1,m=0.00009)
 
+# chamber 3 2fb 
+Hmmr_2fb <- mmr_h_func(data = t2,start = 40198,end = 40198 + 600,oxygen = 40,plot_widt=0.2,
+                       id= Hmmr_2fb, from= 30,to= 450,from1 =30,rate_width=0.2,
+                       v=0.05889,t=25.1,m=0.00044)
 
-ch1_H_mmr_2MP <- ch1_t2_rep_2 |> 
-  
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>   
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |> 
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.15) |>                 
-  # adjust
-  adjust_rate(by = bgch4_pre, 
-              by2 = bgch4_post, 
-              method = "value") |>        
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05644, 
-               t =25.1, S = 0, 
-               mass = 0.00013) |>           
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
-
-# Chamber 2 2mb
-
-ch2_t2_rep_2 <- subset_data(t2,
-                            from = 40438,  # 0844
-                            to = 40438 + 570,
-                            by = "row") |> 
-  inspect(time= 5, oxygen = 4) |> 
-  plot(width = 0.15) 
-
-
-ch2_H_mmr_2MB <- ch2_t2_rep_2 |> 
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                # subset first replicate
-  subset_data(from = 30, 
-              by = "row") |>                # subset again to apply a 'wait' period
-  auto_rate(width = 0.15) |>                 # use auto_rate to get most linear regions
-  adjust_rate(by = bgch4_pre, 
-              by2 = bgch4_post, 
-              method = "value") |>         # adjust
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05758, 
-               t =25.1 , S = 0, mass = 0.00009) |>            # convert
-  select_rate(method = "highest", 
-              n = 1) |>                     # select highest rate 
-  summary(export = TRUE)
-
-# chamber 3 2fb
-
-ch3_t2_rep_2 <- subset_data(t2,
-                            from = 40198, # 0836
-                            to = 40198 + 600, 
-                            by = "row") |> 
-  inspect(time= 8, oxygen = 7) |> 
-  plot(width = 0.2) 
-
-
-ch3_H_mmr_2FB <- ch3_t2_rep_2 |> 
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                # subset first replicate
-  subset_data(from = 30, 
-              by = "row") |>                # subset again to apply a 'wait' period
-  auto_rate(width = 0.2) |>                 # use auto_rate to get most linear regions
-  adjust_rate(by = bgch4_pre, 
-              by2 = bgch4_post, 
-              method = "value") |>         # adjust
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05889, 
-               t =25.1, S = 0, 
-               mass = 0.00044) |>            # convert
-  select_rate(method = "highest", 
-              n = 1) |>                     # select highest rate 
-  summary(export = TRUE)
-
-# Chamber 4 2fp
-
-ch4_t2_rep_2 <- subset_data(t2,
-                            from = 40558, # 0848
-                            to = 40558 + 450, 
-                            by =  "row") |> 
-  inspect(time = 11, oxygen =10 ) |>      
-  plot(width= 0.2) 
-
-
-
-ch4_H_mmr_2FP <- ch4_t2_rep_2 |>                            # using the inspected replicate 1 data...
-  subset_data(from = 60, # 2 min wait period 
-              to = 300,  # 10 min later 
-              by = "row") |>                # subset first replicate
-  subset_data(from = 60, 
-              by = "row") |>                # subset again to apply a 'wait' period
-  auto_rate(width = 0.2) |>                 # use auto_rate to get most linear regions
-  adjust_rate(by = bgch4_pre, 
-              by2 = bgch4_post, 
-              method = "value") |>         # adjust
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05988, 
-               t =25.1, S = 0, 
-               mass = 0.00045) |>            # convert
-  select_rate(method = "highest", 
-              n = 1) |>                     # select highest rate 
-  summary(export = TRUE)                    # final reportable result
-
-
-
+# Chamber 4 2fp 
+Hmmr_2fp <- mmr_h_func(data = t2,start = 40558,end = 40558 + 450,oxygen = 58,plot_widt=0.2,
+                       id= Hmmr_2fp, from= 60,to= 450,from1 =60,rate_width=0.2,
+                       v=0.05988,t=25.1,m=0.00045)
 
 # MMR Trial 3--------------------------------------------------------
+
 # MMR Trial 4--------------------------------------------------------
 
-# MMR Trial 5 - ----------------------------------------------------------------
+# MMR Trial 5----------------------------------------------------------------
 # Chamber 1 7ml
-ch1_t5_rep_2 <- subset_data(t5,
-                            from = 39154, # 0811
-                            to = 39154 + 870, 
-                            by = "row") |> 
-  inspect(time= 2, oxygen = 1) |> 
-  plot(width = 0.15) 
-
-
-ch1_H_mmr_7ML <- ch1_t5_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.15) |>                 
-  # adjust
-  adjust_rate(by = bg_T5_ch1, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05646, 
-               t =25, S = 0, 
-               mass = 0.00011) |>            
-  # select highest rate
-  select_rate(method = "highest", 
-              n = 1) |>                      
-  summary(export = TRUE)
-
+Hmmr_7ml <- mmr_h_func(data = t5,start = 39154,end = 39154 + 870,oxygen = 4,plot_widt=0.15,
+                       id= Hmmr_7ml, from= 30,to= 450,from1 =30,rate_width=0.15,bg =bg_t5_ch1,
+                       v=0.05646,t=25,m=0.00011)
 
 # Chamber 2 7Mb
-ch2_t5_rep_2 <- subset_data(t5,
-                            from = 39214, # 0813
-                            to = 39214 + 810, 
-                            by = "row") |> 
-  inspect(time= 5, oxygen = 4) |> 
-  plot(width = 0.15) 
-
-
-ch2_H_mmr_7MB <- ch2_t5_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.15) |>                 
-  # adjust
-  adjust_rate(by = bg_T5_ch2, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05753, 
-               t =25, S = 0, 
-               mass = 0.00014) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
+Hmmr_7mb <- mmr_h_func(data = t5,start = 39214,end = 39214 + 810,oxygen = 22,plot_widt=0.15,
+                       id= Hmmr_7mb, from= 30,to= 450,from1 =30,rate_width=0.15,bg= bg_t5_ch2,
+                       v=0.05753,t=25,m=0.00014)
 
 
 # Chamber 3 7fb
-
-ch3_t5_rep_2 <- subset_data(t5,
-                            from = 39514, # 0823
-                            to = 39514 + 510, 
-                            by = "row") |> 
-  inspect(time= 8, oxygen = 7) |> 
-  plot(width = 0.2)  
-
-
-ch3_H_mmr_7FB <- ch3_t5_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bg_T5_ch3, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05912, 
-               t =25, S = 0, 
-               mass = 0.00021) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
+Hmmr_7fb <- mmr_h_func(data = t5,start = 39514,end = 39514 + 510,oxygen = 40,plot_widt=0.2,
+                       id= Hmmr_7fb, from= 30,to= 450,from1 =30,rate_width=0.2, bg= bg_t5_ch3,
+                       v=0.05912,t=25,m=0.00021)
 
 # chamber 4 7fp
-ch4_t5_rep_2 <- subset_data(t5,
-                            from = 39574, # 0825
-                            to = 39574 + 450, 
-                            by =  "row") |> 
-  inspect(time = 11, oxygen =10 ) |>       
-  plot(width= 0.2) 
+Hmmr_7fp <- mmr_h_func(data = t5,start = 39574,end = 39574 + 450,oxygen = 58,plot_widt= 0.2,
+                       id= Hmmr_7fp, from= 60,to= 450,from1 = 60,rate_width= 0.2,bg= bg_t5_ch4,
+                       v= 0.05967,t= 25,m= 0.00066)
 
-
-
-ch4_H_mmr_7FP <- 
-  ch4_t5_rep_2 |>                              
-  # subset first replicate
-  subset_data(from = 60, # 2 min wait period 
-              to = 300,  # 10 min later 
-              by = "row") |>               
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 60, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                
-  # adjust
-  adjust_rate(by = bg_T5_ch4, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05967, 
-               t =25, S = 0, 
-               mass = 0.00066) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE) 
-
-
-
-# MMR Trial 6  ----------------------------------------------------
+# MMR Trial 6----------------------------------------------------
 # Chamber 1 7mp
-
-ch1_t6_rep_2 <- subset_data(t6,
-                            from = 39505, # 0818 
-                            to = 39505 +  930, 
-                            by = "row") |> 
-  inspect(time= 2, oxygen = 1) |> 
-  plot(width = 0.15) 
-
-
-ch1_H_mmr_7MP <- ch1_t6_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.15) |>                 
-  # adjust
-  adjust_rate(by = bg_T6_ch1, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05640, 
-               t =25.3, S = 0, 
-               mass = 0.00017) |>            
-  # select highest rate
-  select_rate(method = "highest", 
-              n = 1) |>                      
-  summary(export = TRUE)
-
+Hmmr_7mp <- mmr_h_func(data = t6,start = 39505,end = 39505 +  930,oxygen = 4,plot_widt= 0.15,
+                       id= Hmmr_7mp, from= 30,to= 450,from1 = 30,rate_width= 0.15,bg = bg_t6_ch1,
+                       v= 0.05640,t= 25.3,m= 0.00017)
 
 # Chamber 2 7Mg
-ch2_t6_rep_2 <- subset_data(t6,
-                            from = 39595, # 0821
-                            to = 39595 + 840, 
-                            by = "row") |> 
-  inspect(time= 5, oxygen = 4) |> 
-  plot(width = 0.15) 
-
-
-ch2_H_mmr_7MG <- ch2_t6_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.15) |>                 
-  # adjust
-  adjust_rate(by = bg_T6_ch2, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05753, 
-               t =25.3, S = 0, 
-               mass = 0.00014) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
-
-
+Hmmr_7mg <- mmr_h_func(data = t6,start = 39595,end = 39595 + 840,oxygen = 22,plot_widt= 0.15,
+                       id= Hmmr_7mg, from= 30,to= 450,from1 = 30,rate_width= 0.15,bg=bg_t6_ch2,
+                       v= 0.05753,t= 25.3,m= 0.00014)
 # Chamber 3 7FL
-
-ch3_t6_rep_2 <- subset_data(t6,
-                            from = 39865, #0830
-                            to = 39865 + 570, 
-                            by = "row") |> 
-  inspect(time= 8, oxygen = 7) |> 
-  plot(width = 0.2)  
-
-
-ch3_H_mmr_7FL <- ch3_t6_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bg_T6_ch3, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05888, 
-               t =25.3, S = 0,
-               mass = 0.00045) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
+Hmmr_7fl <- mmr_h_func(data = t6,start = 39865,end = 39865 + 570,oxygen = 40,plot_widt= 0.2,
+                       id= Hmmr_7fl, from= 30,to= 450,from1 = 30,rate_width= 0.2,bg=bg_t6_ch3,
+                       v= 0.05888,t= 25.3,m= 0.00045)
 
 # chamber 4 7fg
-ch4_t6_rep_2 <- subset_data(t6,
-                            from = 39955, #0833
-                            to = 39955 + 600, 
-                            by =  "row") |> 
-  inspect(time = 11, oxygen =10 ) |>       
-  plot(width= 0.2) 
 
-
-
-ch4_H_mmr_7FG <- ch4_t5_rep_2 |>                              
-  # subset first replicate
-  subset_data(from = 60, # 2 min wait period 
-              to = 300,  # 10 min later 
-              by = "row") |>               
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 60, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                
-  # adjust
-  adjust_rate(by = bg_T6_ch4, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05952, 
-               t =25.3, S = 0, 
-               mass = 0.00081) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE) 
-
+Hmmr_7fg <- mmr_h_func(data = t6,start = 39955,end = 39955 + 600,oxygen = 58,plot_widt= 0.2,
+                       id= Hmmr_7fg, from= 60,to= 300,from1 = 60,rate_width= 0.2,bg =bg_t6_ch4,
+                       v= 0.05952,t= 25.3,m= 0.00081)
 
 
 # MMR Trial 7  ----------------------------------------------------
 # Chamber 1 5mg
-ch1_t7_rep_2 <- subset_data(t7,
-                            from = 39620, # 0820 - 0850
-                            to = 39620 + 900, 
-                            by = "row") |> 
-  inspect(time= 2, oxygen = 1) |> 
-  plot(width = 0.15) 
+Hmmr_5mg <- mmr_h_func(data = t7,start = 39620,end = 39620 + 900,oxygen = 4,plot_widt= 0.15,
+                       id= Hmmr_5mg, from= 30,to= 450,from1 = 30,rate_width= 0.15,bg= bg_t7_ch1,
+                       v= 0.05648,t= 25.2,m= 0.00009)
 
 
-ch1_H_mmr_5MG <- ch1_t7_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bg_T7_ch1, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05648, 
-               t =25.2, S = 0, 
-               mass = 0.00009) |>            
-  # select highest rate
-  select_rate(method = "highest", 
-              n = 1) |>                      
-  summary(export = TRUE)
-
-
-# Chamber 2 - 5mp
-ch2_t7_rep_2 <- subset_data(t7,
-                            from = 39710, # 0823
-                            to = 39710 + 810, 
-                            by = "row") |> 
-  inspect(time= 5, oxygen = 4) |> 
-  plot(width = 0.15) 
-
-
-ch2_H_mmr_5MB <- ch2_t7_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.15) |>                 
-  # adjust
-  adjust_rate(by = bg_T7_ch2, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05755, 
-               t =25.2, S = 0, 
-               mass = 0.00012) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
-
+# Chamber 2 5mp
+Hmmr_5mp <- mmr_h_func(data = t7,start = 39710,end = 39710 + 810,oxygen = 22,plot_widt= 0.15,
+                       id= Hmmr_5mp, from= 30,to= 450,from1 = 30,rate_width= 0.15,bg=bg_t7_ch2,
+                       v= 0.05755,t= 25.2,m= 0.00012)
 
 # Chamber 3 5ml
-
-ch3_t7_rep_2 <- subset_data(t7,
-                            from = 39980, # 0832
-                            to = 39980 + 540, 
-                            by = "row") |> 
-  inspect(time= 8, oxygen = 7) |> 
-  plot(width = 0.2)  
-
-
-ch3_H_mmr_5ML <- ch3_t7_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bg_T7_ch3, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05921, 
-               t =25.2, S = 0, 
-               mass = 0.00012) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
+Hmmr_5ml <- mmr_h_func(data = t7,start = 39980,end = 39980 + 540,oxygen = 40,plot_widt= 0.15,
+                       id= Hmmr_5ml, from= 30,to= 450,from1 = 30,rate_width= 0.15,bg=bg_t7_ch3,
+                       v= 0.05921,t= 25.2,m= 0.00012)
 
 
 # chamber 4 5fp
-ch4_t7_rep_2 <- subset_data(t7,
-                            from = 40070, #0835
-                            to = 40070 + 600, 
-                            by =  "row") |> 
-  inspect(time = 11, oxygen =10 ) |>       
-  plot(width= 0.2) 
-
-
-
-ch4_H_mmr_5FP <- ch4_t7_rep_2 |>                              
-  # subset first replicate
-  subset_data(from = 60, # 2 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>               
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 60, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                
-  # adjust
-  adjust_rate(by = bg_T7_ch4, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05991, 
-               t =25.2, S = 0, 
-               mass = 0.00042) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE) 
-
-
+Hmmr_5fp <- mmr_h_func(data = t7,start = 40070,end = 40070 + 600,oxygen = 58,plot_widt= 0.2,
+                       id= Hmmr_5fp, from= 60,to= 450,from1 = 60,rate_width= 0.2,bg=bg_t7_ch4,
+                       v= 0.05991,t= 25.2,m= 0.00042)
 
 # MMR trial 8  -----------------------------------------------------
 # Chamber 1 5mb
-ch1_t8_rep_2 <- subset_data(t8,
-                            from = 39166, # 0812 - 0842
-                            to = 39166 +  900, 
-                            by = "row") |> 
-  inspect(time= 2, oxygen = 1) |> 
-  plot(width = 0.15) 
+Hmmr_5mb <- mmr_h_func(data = t8,start = 39166,end = 39166 +  900,oxygen = 4,plot_widt= 0.15,
+                       id= Hmmr_5mb, from= 30,to= 450,from1 = 30,rate_width= 0.15,bg=bg_t8_ch1,
+                       v= 0.05648,t= 25.1,m= 0.00009)
 
-
-ch1_H_mmr_5MB <- ch1_t8_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.15) |>                 
-  # adjust
-  adjust_rate(by = bg_T8_ch1, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05648, 
-               t =25.1, S = 0, 
-               mass = 0.00009) |>            
-  # select highest rate
-  select_rate(method = "highest", 
-              n = 1) |>                      
-  summary(export = TRUE)
-
-
-# Chamber 2 - 5fb
-ch2_t8_rep_2 <- subset_data(t8,
-                            from = 39226, # 0814
-                            to = 39226 + 840, 
-                            by = "row") |> 
-  inspect(time= 5, oxygen = 4) |> 
-  plot(width = 0.2) 
-
-
-ch2_H_mmr_5FB <- ch2_t8_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bg_T8_ch2, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05735, 
-               t =25.1, S = 0, 
-               mass = 0.00032) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
-
+# Chamber 2 5fb
+Hmmr_5fb <- mmr_h_func(data = t8,start = 39226,end = 39226 + 840,oxygen = 22,plot_widt= 0.2,
+                       id= Hmmr_5fb, from= 30,to= 450,from1 = 30,rate_width= 0.15,bg_t8_ch2,
+                       v= 0.05735,t= 25.1,m= 0.00032)
 
 # Chamber 3 5fl
-
-ch3_t8_rep_2 <- subset_data(t8,
-                            from = 39526, # 0824
-                            to = 39526 + 540, 
-                            by = "row") |> 
-  inspect(time= 8, oxygen = 7) |> 
-  plot(width = 0.15)  
-
-
-ch3_H_mmr_5FL <- ch3_t8_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.1) |>                 
-  # adjust
-  adjust_rate(by = bg_T8_ch3, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05897, 
-               t =25.1, S = 0, 
-               mass = 0.00036) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
+Hmmr_5fl <- mmr_h_func(data = t8,start = 39526,end = 39526 + 540,oxygen = 40,plot_widt= 0.15,
+                       id= Hmmr_5fl, from= 30,to= 450,from1 = 30,rate_width= 0.15,bg_t8_ch3,
+                       v= 0.05897,t= 25.1,m= 0.00036)
 
 # chamber 4 5fg
-ch4_t8_rep_2 <- subset_data(t8,
-                            from = 39586, #0826
-                            to = 39586 + 480, 
-                            by =  "row") |> 
-  inspect(time = 11, oxygen =10 ) |>       
-  plot(width= 0.2) 
-
-
-
-ch4_H_mmr_5FG <- ch4_t8_rep_2 |>                              
-  # subset first replicate
-  subset_data(from = 60, # 2 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>               
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 60, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                
-  # adjust
-  adjust_rate(by = bg_T8_ch4, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05993, 
-               t =25.1, S = 0, 
-               mass = 0.00040) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE) 
-
+Hmmr_5fg <- mmr_h_func(data = t8,start = 39586,end = 39586 + 480,oxygen = 58,plot_widt= 0.2,
+                       id= Hmmr_5fg, from= 60,to= 450,from1 = 60,rate_width= 0.15,bg_t8_ch4,
+                       v= 0.05993,t= 25.1,m= 0.00040)
 
 # MMR trial 9  ----------------------------------------------------
 # Chamber 1 9ml
-ch1_t9_rep_2 <- subset_data(t9,
-                            from = 39769, # 0820 - 0850
-                            to = 39769 + 900, 
-                            by = "row") |> 
-  inspect(time= 2, oxygen = 1) |> 
-  plot(width = 0.1) 
+Hmmr_9ml <- mmr_h_func(data = t9,start = 39769,end = 39769 + 900,oxygen = 4,plot_widt= 0.1,
+                       id = Hmmr_9ml, from= 30,to= 450,from1 = 30,rate_width= 0.15,bg_t9_ch1,
+                       v= 0.05644,t= 25,m= 0.00013)
 
-
-ch1_H_mmr_9ML <- ch1_t9_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bg_T9_ch1, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05644, 
-               t =25, S = 0, 
-               mass = 0.00013) |>            
-  # select highest rate
-  select_rate(method = "highest", 
-              n = 1) |>                      
-  summary(export = TRUE)
-
-
-# Chamber 2 - 9mg
-ch2_t9_rep_2 <- subset_data(t9,
-                            from = 39859, # 0823
-                            to = 39859 + 810, 
-                            by = "row") |> 
-  inspect(time= 5, oxygen = 4) |> 
-  plot(width = 0.15) 
-
-
-ch2_H_mmr_9MG <- ch2_t9_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.15) |>                 
-  # adjust
-  adjust_rate(by = bg_T9_ch2, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05755, 
-               t =25, S = 0, 
-               mass = 0.00012) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
-
-
+# Chamber 2 9mg
+Hmmr_9mg <- mmr_h_func(data = t9,start = 39859,end = 39859 + 810,oxygen = 22,plot_widt= 0.15,
+                       id = Hmmr_9mg, from= 30,to= 450,from1 = 30,rate_width= 0.15, bg_t9_ch2,
+                       v= 0.05755,t= 25,m= 0.00012)
 # Chamber 3 9Mp
-
-ch3_t9_rep_2 <- subset_data(t9,
-                            from = 40099, # 0831
-                            to = 40099 + 570, 
-                            by = "row") |> 
-  inspect(time= 8, oxygen = 7) |> 
-  plot(width = 0.15)  
-
-
-ch3_H_mmr_9Mp <- ch3_t9_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.15) |>                 
-  # adjust
-  adjust_rate(by = bg_T9_ch3, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05917, 
-               t =25, S = 0, 
-               mass = 0.00016) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
+Hmmr_9mp <- mmr_h_func(data = t9,start = 40099,end = 40099 + 570,oxygen = 40,plot_widt= 0.15,
+                       id = Hmmr_9mp, from= 30,to= 450,from1 = 30,rate_width= 0.15,bg_t9_ch3,
+                       v= 0.05917,t= 25,m= 0.00016)
 
 
 # chamber 4 9Fb
-ch4_t9_rep_2 <- subset_data(t9,
-                            from = 40219, #0835
-                            to = 40219 + 600, 
-                            by =  "row") |> 
-  inspect(time = 11, oxygen =10 ) |>       
-  plot(width= 0.2) 
-
-
-
-ch4_H_mmr_9Fb <- ch4_t9_rep_2 |>                              
-  # subset first replicate
-  subset_data(from = 60, # 2 min wait period 
-              to = 300,  # 10 min later 
-              by = "row") |>               
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 60, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                
-  # adjust
-  adjust_rate(by = bg_T9_ch4, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05999, 
-               t =25, S = 0, 
-               mass = 0.00034) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE) 
-
+Hmmr_9fb <- mmr_h_func(data = t9,start = 40219,end = 40219 + 600,oxygen = 58,plot_widt= 0.2,
+                       id = Hmmr_9fb, from= 60,to= 300,from1 = 60,rate_width= 0.2,bg_t9_ch4,
+                       v= 0.05999,t= 25,m= 0.00034)
 
 # MMR trial 10  ----------------------------------------------------
 # Chamber 1 9Mb
-ch1_t10_rep_2 <- subset_data(t10,
-                             from = 39201, # 0819 - 0845
-                             to = 39201 +  780, 
-                             by = "row") |> 
-  inspect(time= 2, oxygen = 1) |> 
-  plot(width = 0.15) 
+Hmmr_9mb <- mmr_h_func(data = t10,start = 39201,end = 39201 +  780,oxygen = 4,plot_widt= 0.15,
+                       id = Hmmr_9mb, from= 30,to= 450,from1 = 30,rate_width= 0.15,
+                       v= 0.05645,t= 25.4,m= 0.00012)
 
-
-ch1_H_mmr_9Mb <- ch1_t10_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.15) |>                 
-  # adjust
-  adjust_rate(by = bgch4_pre, 
-              by2 = bgch4_post, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05645, 
-               t =25.4, S = 0, 
-               mass = 0.00012) |>            
-  # select highest rate
-  select_rate(method = "highest", 
-              n = 1) |>                      
-  summary(export = TRUE)
-
-
-# Chamber 2 - 9fl
-ch2_t10_rep_2 <- subset_data(t10,
-                             from = 39321, # 0823
-                             to = 39321 + 660, 
-                             by = "row") |> 
-  inspect(time= 5, oxygen = 4) |> 
-  plot(width = 0.2) 
-
-
-ch2_H_mmr_9FL <- ch2_t10_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bgch4_pre, 
-              by2 = bgch4_post, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05725, 
-               t =25.4, S = 0, 
-               mass = 0.00042) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
-
-
+# Chamber 2 9fl
+Hmmr_9fl <- mmr_h_func(data = t10,start = 39321,end = 39321 + 660,oxygen = 22,plot_widt= 0.2,
+                       id = Hmmr_9fl, from= 30,to= 450,from1 = 30,rate_width= 0.2,
+                       v= 0.05725,t= 25.4,m= 0.00042)
 # Chamber 3 9fp
-
-ch3_t10_rep_2 <- subset_data(t10,
-                             from = 39561, # 0831
-                             to = 39561 + 420, 
-                             by = "row") |> 
-  inspect(time= 8, oxygen = 7) |> 
-  plot(width = 0.2)  
-
-
-ch3_H_mmr_9Fp <- ch3_t10_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 300,  # 10 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bgch4_pre, 
-              by2 = bgch4_post, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05876, 
-               t =25.4, S = 0, 
-               mass = 0.00057) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
+Hmmr_9fp <- mmr_h_func(data = t10,start = 39561,end = 39561 + 420,oxygen = 40,plot_widt= 0.2,
+                       id = Hmmr_9fp, from= 30,to= 450,from1 = 30,rate_width= 0.2,
+                       v= 0.05876,t= 25.4,m= 0.00057)
 
 # chamber 4 9fg background
 #empty chamber since fish was dead, background was done on it 
 
 
-
 # MMR trial 11 -----------------------------------------------------------------
 # Chamber 1 4mb
-ch1_t11_rep_2 <- subset_data(t11,
-                             from = 39968, # 0816 - 0842/43
-                             to = 39968 + 780, 
-                             by = "row") |> 
-  inspect(time= 2, oxygen = 1) |> 
-  plot(width = 0.15) 
-
-
-ch1_H_mmr_4Mb <- ch1_t11_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bg_T11_ch1, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05747, 
-               t =25.3, S = 0, 
-               mass = 0.00010) |>            
-  # select highest rate
-  select_rate(method = "highest", 
-              n = 1) |>                      
-  summary(export = TRUE)
-
+Hmmr_4mb <- mmr_h_func(data = t11,start = 39968,end = 39968 + 780,oxygen = 4,plot_widt= 0.15,
+                       id = Hmmr_4mb, from= 30,to= 450,from1 = 30,rate_width= 0.2,bg_t11_ch1,
+                       v= 0.05747,t= 25.3,m= 0.00010)
 
 # Chamber 2 4ml
-ch2_t11_rep_2 <- subset_data(t11,
-                             from = 40298, # 0827
-                             to = 40298 + 450, 
-                             by = "row") |> 
-  inspect(time= 5, oxygen = 4) |> 
-  plot(width = 0.2) 
-
-
-ch2_H_mmr_4ML <- ch2_t11_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to =300,  # 10 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bg_T11_ch2, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05645, 
-               t =25.3, S = 0, 
-               mass = 0.00012) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
-
+Hmmr_4ml <- mmr_h_func(data = t11,start = 40298,end = 40298 + 450,oxygen = 22,plot_widt= 0.15,
+                       id = Hmmr_4ml, from= 30,to= 450,from1 = 30,rate_width= 0.2,bg_t11_ch2,
+                       v= 0.05645,t= 25.3,m= 0.00012)
 
 # Chamber 3 4fl
-
-ch3_t11_rep_2 <- subset_data(t11,
-                             from = 40058, # 0819
-                             to = 40058 + 690, 
-                             by = "row") |> 
-  inspect(time= 8, oxygen = 7) |> 
-  plot(width = 0.2)  
-
-
-ch3_H_mmr_4FL <- ch3_t11_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bg_T11_ch3, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05894, 
-               t =25.3, S = 0, 
-               mass = 0.00039) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
+Hmmr_4fl <- mmr_h_func(data = t11,start = 40058,end = 40058 + 690,oxygen = 40,plot_widt= 0.2,
+                       id = Hmmr_4fl, from= 30,to= 450,from1 = 30,rate_width= 0.2,bg_t11_ch3,
+                       v= 0.05894,t= 25.3,m= 0.00039)
 
 # chamber 4 4fb
-    # No hypoxia MMR, fist observation of bleeding in the head region
+# no hmmr, first obeservatoin of blood in head region
 
 # MMR trial 12 -----------------------------------------------------------------
 # Chamber 1 4mp
-ch1_t12_rep_2 <- subset_data(t12,
-                             from = 39572, # 0816 - 0846.59
-                             to = 39572 + 900, 
-                             by = "row") |> 
-  inspect(time= 2, oxygen = 1) |> 
-  plot(width = 0.15) 
-
-
-ch1_H_mmr_4Mp <- ch1_t12_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.15) |>                 
-  # adjust
-  adjust_rate(by = bg_T12_ch1, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05648, 
-               t =25.2, S = 0, 
-               mass = 0.00009) |>            
-  # select highest rate
-  select_rate(method = "highest", 
-              n = 1) |>                      
-  summary(export = TRUE)
-
+Hmmr_4mp <- mmr_h_func(data = t12,start = 39572,end = 39572 + 900,oxygen = 4,plot_widt= 0.15,
+                       id = Hmmr_4mp, from= 30,to= 450,from1 = 30,rate_width= 0.15,bg_t12_ch1,
+                       v= 0.05648,t= 25.2,m= 0.00009)
 
 # Chamber 2 4mg
-ch2_t12_rep_2 <- subset_data(t12,
-                             from = 39662, # 0819
-                             to = 39662 + 810, 
-                             by = "row") |> 
-  inspect(time= 5, oxygen = 4) |> 
-  plot(width = 0.15) 
-
-
-ch2_H_mmr_4Mg <- ch2_t12_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.15) |>                 
-  # adjust
-  adjust_rate(by = bg_T12_ch2, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05756, 
-               t =25.2, S = 0, 
-               mass = 0.00011) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
-
+Hmmr_4mg <- mmr_h_func(data = t12,start = 39662,end = 39662 + 810,oxygen = 22,plot_widt= 0.15,
+                       id = Hmmr_4mg, from= 30,to= 450,from1 = 30,rate_width= 0.15,bg_t12_ch2,
+                       v= 0.05756,t= 25.2,m= 0.00011)
 
 # Chamber 3 4fp
-
-ch3_t12_rep_2 <- subset_data(t12,
-                             from = 39932, # 0828
-                             to = 39932 + 540, 
-                             by = "row") |> 
-  inspect(time= 8, oxygen = 7) |> 
-  plot(width = 0.2)  
-
-
-ch3_mmr4Fp <- ch3_t12_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bg_T12_ch3, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05890, 
-               t =25.2, S = 0, 
-               mass = 0.00043) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
+Hmmr_4fp <- mmr_h_func(data = t12,start = 39932,end = 39932 + 540,oxygen = 40,plot_widt= 0.2,
+                       id = Hmmr_4fp, from= 30,to= 450,from1 = 30,rate_width= 0.2,bg_t12_ch3,
+                       v= 0.05890,t= 25.2,m= 0.00043)
 
 # chamber 4 4fg
-ch4_t12_rep_2 <- subset_data(t12,
-                             from = 40022, #0831
-                             to = 40022 + 450, 
-                             by =  "row") |> 
-  inspect(time = 11, oxygen =10 ) |>       
-  plot(width= 0.2) 
-
-
-
-ch4_H_mmr_4Fg <- ch4_t12_rep_2 |>                              
-  # subset first replicate
-  subset_data(from = 60, # 2 min wait period 
-              to = 300,  # 10 min later 
-              by = "row") |>               
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 60, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                
-  # adjust
-  adjust_rate(by = bg_T12_ch4, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05961, 
-               t =25.2, S = 0, 
-               mass = 0.00072) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE) 
-
+Hmmr_4fg <- mmr_h_func(data = t12,start = 40022,end = 40022 + 450,oxygen = 58,plot_widt= 0.2,
+                       id = Hmmr_4fg, from= 60,to= 450,from1 = 60,rate_width= 0.2,bg_t12_ch4,
+                       v= 0.05961,t= 25.2,m= 0.00072)
 
 # MMR trial 13 -----------------------------------------------------------------
 # Chamber 1 12mp
-ch1_t13_rep_2 <- subset_data(t13,
-                             from = 39444, # 0833 -09:00
-                             to = 39444 + 810, 
-                             by = "row") |> 
-  inspect(time= 2, oxygen = 1) |> 
-  plot(width = 0.15) 
-
-
-ch1_H_mmr_12Mp <- ch1_t13_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.15) |>                 
-  # adjust
-  adjust_rate(by = bgch4_pre, 
-              by2 = bgch4_post, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05648, 
-               t =25.1, S = 0, 
-               mass = 0.00009) |>            
-  # select highest rate
-  select_rate(method = "highest", 
-              n = 1) |>                      
-  summary(export = TRUE)
-
-
+Hmmr_12mp <- mmr_h_func(data = t13,start = 39444,end = 39444 + 810,oxygen = 4,plot_widt= 0.15,
+                        id = Hmmr_12mp, from= 30,to= 450,from1 = 30,rate_width= 0.15,
+                        v= 0.05648,t= 25.1,m= 0.00009)
 # Chamber 2 12mg bg
 
 
 # Chamber 3 12fg
-
-ch3_t13_rep_2 <- subset_data(t13,
-                             from = 39504, # 0835
-                             to = 39504 + 750, 
-                             by = "row") |> 
-  inspect(time= 8, oxygen = 7) |> 
-  plot(width = 0.2)  
-
-
-ch3_H_mmr_12Fg <- ch3_t13_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bgch4_pre, 
-              by2 = bgch4_post, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05896, 
-               t =25.1, S = 0, 
-               mass = 0.00037) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
+Hmmr_12fg <- mmr_h_func(data = t13,start = 39504,end = 39504 + 750,oxygen = 40,plot_widt= 0.2,
+                        id = Hmmr_12fg, from= 30,to= 450,from1 = 30,rate_width= 0.2,
+                        v= 0.05896,t= 25.1,m= 0.00037)
 
 # chamber 4 12fb
-ch4_t13_rep_2 <- subset_data(t13,
-                             from = 39774, # 0844
-                             to = 39774 + 450, 
-                             by =  "row") |> 
-  inspect(time = 11, oxygen =10 ) |>       
-  plot(width= 0.2) 
+Hmmr_12fb <- mmr_h_func(data = t13,start = 39774,end = 39774 + 450,oxygen = 58,plot_widt= 0.2,
+                        id = Hmmr_12fb, from= 60,to= 450,from1 = 60,rate_width= 0.2,
+                        v= 0.05989,t= 25.1,m= 0.00044)
 
-
-
-ch4_H_mmr_12Fb <- ch4_t13_rep_2 |>                              
-  # subset first replicate
-  subset_data(from = 60, # 2 min wait period 
-              to = 300,  # 10 min later 
-              by = "row") |>               
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 60, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                
-  # adjust
-  adjust_rate(by = bgch4_pre, 
-              by2 = bgch4_post, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05989, 
-               t =25.1, S = 0, 
-               mass = 0.00044) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE) 
-
-
-# MMR trial 14 -----------------------------------------------------------------
+# MMR trial 14-----------------------------------------------------------------
 # Chamber 1 12Ml
-ch1_t14_rep_2 <- subset_data(t14,
-                             from = 39631, # 0824 - 52
-                             to = 39631 + 840, 
-                             by = "row") |> 
-  inspect(time= 2, oxygen = 1) |> 
-  plot(width = 0.2) 
-
-
-ch1_H_mmr_12ML <- ch1_t14_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bgch4_pre, 
-              by2 = bgch4_post, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05645, 
-               t =24.8, S = 0, 
-               mass = 0.00012) |>            
-  # select highest rate
-  select_rate(method = "highest", 
-              n = 1) |>                      
-  summary(export = TRUE)
-
+Hmmr_12ml <- mmr_h_func(data = t14,start = 39631,end = 39631 + 840,oxygen = 4,plot_widt= 0.2,
+                        id = Hmmr_12ml, from= 30,to= 450,from1 = 30,rate_width= 0.2,
+                        v= 0.05645,t= 24.8,m= 0.00012)
 
 # Chamber 2 12mb bg
-            
+
 
 # Chamber 3 12fL
-
-ch3_t14_rep_2 <- subset_data(t14,
-                             from = 39721, # 0827
-                             to = 39721 + 750, 
-                             by = "row") |> 
-  inspect(time= 8, oxygen = 7) |> 
-  plot(width = 0.2)  
-
-
-ch3_H_mmr_12FL <- ch3_t14_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bgch4_pre, 
-              by2 = bgch4_post, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05901, 
-               t =24.8, S = 0, 
-               mass = 0.00032) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
+Hmmr_12fl <- mmr_h_func(data = t14,start = 39721,end = 39721 + 750,oxygen = 40,plot_widt= 0.2,
+                        id = Hmmr_12fl, from= 30,to= 450,from1 = 30,rate_width= 0.2,
+                        v= 0.05901,t= 24.8,m= 0.00032)
 
 # chamber 4 12Fp
-ch4_t14_rep_2 <- subset_data(t14,
-                             from = 39991, #0836
-                             to = 39991 + 450, 
-                             by =  "row") |> 
-  inspect(time = 11, oxygen =10 ) |>       
-  plot(width= 0.2) 
-
-
-
-ch4_H_mmr_12Fp <- ch4_t14_rep_2 |>                              
-  # subset first replicate
-  subset_data(from = 60, # 2 min wait period 
-              to = 300,  # 10 min later 
-              by = "row") |>               
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 60, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                
-  # adjust
-  adjust_rate(by = bgch4_pre, 
-              by2 = bgch4_post, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05996, 
-               t =24.8, S = 0, 
-               mass = 0.00037) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE) 
-
-
-
-
+Hmmr_12fp <- mmr_h_func(data = t14,start = 39991,end = 39991 + 450,oxygen = 58,plot_widt= 0.2,
+                        id = Hmmr_12fp, from= 60,to= 450,from1 = 60,rate_width= 0.2,
+                        v= 0.05996,t= 24.8,m= 0.00037)
 
 # MMR trial 15 -----------------------------------------------------------------
 # Chamber 1 3mp
-ch1_t15_rep_2 <- subset_data(t15,
-                             from = 39576, # 0815 -51
-                             to = 39576 +  1080, 
-                             by = "row") |> 
-  inspect(time= 2, oxygen = 1) |> 
-  plot(width = 0.15) 
-
-
-ch1_H_mmr_3Mp <- ch1_t15_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.15) |>                 
-  # adjust
-  adjust_rate(by = bg_T15_ch1, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05641, 
-               t =24.7, S = 0, 
-               mass = 0.00016) |>            
-  # select highest rate
-  select_rate(method = "highest", 
-              n = 1) |>                      
-  summary(export = TRUE)
-
+Hmmr_3mp <- mmr_h_func(data = t15,start = 39576,end =39576 +  1080,oxygen = 4,plot_widt= 0.15,
+                       id = Hmmr_3mp, from= 30,to= 450,from1 = 30,rate_width= 0.15,bg_t15_ch1,
+                       v= 0.05641,t= 24.7,m= 0.00016)
 
 # Chamber 2 3fb
-ch2_t15_rep_2 <- subset_data(t15,
-                             from = 39726, # 0820
-                             to = 39726 + 930, 
-                             by = "row") |> 
-  inspect(time= 5, oxygen = 4) |> 
-  plot(width = 0.2) 
-
-
-ch2_H_mmr_3Fb <- ch2_t15_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bg_T15_ch2, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05722, 
-               t =24.8, S = 0,
-               mass = 0.00045) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
-
+Hmmr_3fb <- mmr_h_func(data = t15,start = 39726,end = 39726 + 930,oxygen = 22,plot_widt= 0.2,
+                       id = Hmmr_3fb, from= 30,to= 450,from1 = 30,rate_width= 0.2,bg_t15_ch2,
+                       v= 0.05722,t= 24.7,m= 0.00045)
 
 # Chamber 3 3fL
-
-ch3_t15_rep_2 <- subset_data(t15,
-                             from = 39966, # 0828
-                             to = 39966 + 690, 
-                             by = "row") |> 
-  inspect(time= 8, oxygen = 7) |> 
-  plot(width = 0.2)  
-
-
-ch3_H_mmr_3FL <- ch3_t15_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bg_T15_ch3, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05861, 
-               t =24.8, S = 0, 
-               mass = 0.00072) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
+Hmmr_3fl <- mmr_h_func(data = t15,start = 39966,end = 39966 + 690,oxygen = 40,plot_widt= 0.2,
+                       id = Hmmr_3fl, from= 30,to= 450,from1 = 30,rate_width= 0.2,bg_t15_ch3,
+                       v= 0.05861,t= 24.7,m= 0.00072)
 
 # chamber 4 3fg
-ch4_t15_rep_2 <- subset_data(t15,
-                             from = 40146, #0834
-                             to = 40146 + 510, 
-                             by =  "row") |> 
-  inspect(time = 11, oxygen =10 ) |>       
-  plot(width= 0.2) 
-
-
-
-ch4_H_mmr_3Fg <- ch4_t15_rep_2 |>                              
-  # subset first replicate
-  subset_data(from = 60, # 2 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>               
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 60, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                
-  # adjust
-  adjust_rate(by = bg_T15_ch4, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05940, 
-               t =24.8, S = 0, 
-               mass = 0.00093) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE) 
-
+Hmmr_3fg <- mmr_h_func(data = t15,start = 40146,end = 40146 + 510,oxygen = 58,plot_widt= 0.2,
+                       id = Hmmr_3fg, from= 60,to= 450,from1 = 60,rate_width= 0.2,bg_t15_ch4,
+                       v= 0.05940,t= 24.7,m= 0.00093)
 
 # MMR trial 16 -----------------------------------------------------------------
 # Chamber 1 3mg
-ch1_t16_rep_2 <- subset_data(t16,
-                             from = 39044, # 0819 - 56
-                             to = 39044 +  1110, 
-                             by = "row") |> 
-  inspect(time= 2, oxygen = 1) |> 
-  plot(width = 0.15) 
-
-
-ch1_H_mmr_3Mg <- ch1_t16_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bg_T16_ch1, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05645, 
-               t =24.4, S = 0, 
-               mass = 0.00012) |>            
-  # select highest rate
-  select_rate(method = "highest", 
-              n = 1) |>                      
-  summary(export = TRUE)
-
+Hmmr_3mg <- mmr_h_func(data = t16,start = 39044,end = 39044 +  1110,oxygen = 4,plot_widt= 0.15,
+                       id = Hmmr_3mg, from= 30,to= 450,from1 = 30,rate_width= 0.2,bg_t16_ch1,
+                       v= 0.05645,t= 24.4,m= 0.00012)
 
 # Chamber 2 3mL
-ch2_t16_rep_2 <- subset_data(t16,
-                             from = 39164, # 0823
-                             to = 39164 + 990, 
-                             by = "row") |> 
-  inspect(time= 5, oxygen = 4) |> 
-  plot(width = 0.15) 
-
-
-ch2_H_mmr_3ML <- ch2_t16_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bg_T16_ch2, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05756, 
-               t =24.4, S = 0, 
-               mass = 0.00011) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
-
+Hmmr_3ml <- mmr_h_func(data = t16,start = 39164,end = 39164 + 990,oxygen = 22,plot_widt= 0.15,
+                       id = Hmmr_3ml, from= 30,to= 450,from1 = 30,rate_width= 0.2,bg_t16_ch2,
+                       v= 0.05756,t= 24.4,m= 0.00011)
 
 # Chamber 3 3fp
-
-ch3_t16_rep_2 <- subset_data(t16,
-                             from = 39464, # 0833
-                             to = 39464 + 690, 
-                             by = "row") |> 
-  inspect(time= 8, oxygen = 7) |> 
-  plot(width = 0.2)  
-
-
-ch3_H_mmr_3Fp <- ch3_t16_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bg_T16_ch3, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05904, 
-               t =24.4, S = 0, 
-               mass = 0.00029) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
-
+Hmmr_3fp <- mmr_h_func(data = t16,start = 39464,end = 39464 + 690,oxygen = 40,plot_widt= 0.2,
+                       id = Hmmr_3fp, from= 30,to= 450,from1 = 30,rate_width= 0.2,bg_t16_ch3,
+                       v= 0.05904,t= 24.4,m= 0.00029)
 # chamber 4 3mb bg
-
 
 
 # MMR trial 17 -----------------------------------------------------------------
 # Chamber 1 6mp
-ch1_t17_rep_2 <- subset_data(t17,
-                             from = 37216, # 0822 - 48
-                             to = 37216 +  780,
-                             by = "row") |> 
-  inspect(time= 2, oxygen = 1) |> 
-  plot(width = 0.15) 
-
-
-ch1_H_mmr_5Mp <- ch1_t17_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bgch4_pre, 
-              by2 = bgch4_post, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05648, 
-               t =24.5, S = 0, 
-               mass = 0.00009) |>            
-  # select highest rate
-  select_rate(method = "highest", 
-              n = 1) |>                      
-  summary(export = TRUE)
-
-
+Hmmr_6mp <- mmr_h_func(data = t17,start = 37216,end = 37216 +  780,oxygen = 4,plot_widt= 0.15,
+                       id = Hmmr_6mp, from= 30,to= 450,from1 = 30,rate_width= 0.2,
+                       v= 0.05648,t= 24.5,m= 0.00009)
 # Chamber 2 6mg
-ch2_t17_rep_2 <- subset_data(t17,
-                             from = 37276, # 0824
-                             to = 37276 + 720, 
-                             by = "row") |> 
-  inspect(time= 5, oxygen = 4) |> 
-  plot(width = 0.15) 
-
-
-ch2_H_mmr_5Mg <- ch2_t17_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bgch4_pre, 
-              by2 = bgch4_post, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05761, 
-               t =24.5, S = 0, 
-               mass = 0.00006) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
-
+# 9 min flush?
+Hmmr_6mg <- mmr_h_func(data = t17,start = 37276,end = 37276 + 720,oxygen = 22,plot_widt= 0.15,
+                       id = Hmmr_6mg, from= 30,to= 450,from1 = 30,rate_width= 0.15,
+                       v= 0.05761,t= 24.5,m= 0.00006)
 
 # Chamber 3 6fb
-
-ch3_t17_rep_2 <- subset_data(t17,
-                             from = 37546, # 08:33
-                             to = 37546 + 450, 
-                             by = "row") |> 
-  inspect(time= 8, oxygen = 7) |> 
-  plot(width = 0.2)  
-
-
-ch3_H_mmr_6Fb <- ch3_t17_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 300,  # 10 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bgch4_pre, 
-              by2 = bgch4_post, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05893, 
-               t =24.5, S = 0, 
-               mass = 0.00040) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
+Hmmr_6fb <- mmr_h_func(data = t17,start = 37546,end = 37546 + 450,oxygen = 40,plot_widt= 0.2,
+                       id = Hmmr_6fb, from= 30,to= 450,from1 = 30,rate_width= 0.2,
+                       v= 0.05893,t= 24.5,m= 0.00040)
 
 # chamber 4 6ml bg
 
 
+
 # MMR trial 18 -----------------------------------------------------------------
 # Chamber 1 6mb
-ch1_t18_rep_2 <- subset_data(t18,
-                             from = 39274, # 0827-57
-                             to = 39274 + 900, 
-                             by = "row") |> 
-  inspect(time= 2, oxygen = 1) |> 
-  plot(width = 0.15) 
-
-
-ch1_H_mmr_6Mb <- ch1_t18_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.15) |>                 
-  # adjust
-  adjust_rate(by = bg_T18_ch1, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05649, 
-               t =25.8, S = 0, 
-               mass = 0.00008) |>            
-  # select highest rate
-  select_rate(method = "highest", 
-              n = 1) |>                      
-  summary(export = TRUE)
-
+Hmmr_6mb <- mmr_h_func(data = t18,start = 39274,end = 39274 + 900,oxygen = 4,plot_widt= 0.15,
+                       id = Hmmr_6mb, from= 30,to= 450,from1 = 30,rate_width= 0.15,bg_t18_ch1,
+                       v= 0.05649,t= 25.8,m= 0.00008)
 
 # Chamber 2 6fp
-ch2_t18_rep_2 <- subset_data(t18,
-                             from = 39364, # 0830
-                             to = 39364 + 810, 
-                             by = "row") |> 
-  inspect(time= 5, oxygen = 4) |> 
-  plot(width = 0.2) 
-
-
-ch2_H_mmr_6Fp <- ch2_t18_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bg_T18_ch2, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05739, 
-               t =25.8, S = 0, 
-               mass = 0.00028) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
-
+Hmmr_6fp <- mmr_h_func(data = t18,start = 39364,end = 39364 + 810,oxygen = 22,plot_widt= 0.2,
+                       id = Hmmr_6fp, from= 30,to= 450,from1 = 30,rate_width= 0.2,bg_t18_ch2,
+                       v= 0.05739,t= 25.8,m= 0.00028)
 
 # Chamber 3 6fg
-
-ch3_t18_rep_2 <- subset_data(t18,
-                             from = 39635, # 0839
-                             to = 39635 + 540, 
-                             by = "row") |> 
-  inspect(time= 8, oxygen = 7) |> 
-  plot(width = 0.2)  
-
-
-ch3_H_mmr_6Fg <- ch3_t18_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bg_T18_ch3, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05896, 
-               t =25.8, S = 0, 
-               mass = 0.00037) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
+Hmmr_6fg <- mmr_h_func(data = t18,start = 39635,end = 39635 + 540,oxygen = 40,plot_widt= 0.2,
+                       id = Hmmr_6fg, from= 30,to= 450,from1 = 30,rate_width= 0.2,bg_t18_ch3,
+                       v= 0.05896,t= 25.8,m= 0.00037)
 
 # chamber 4 6fl
-ch4_t18_rep_2 <- subset_data(t18,
-                             from = 39724, #0842
-                             to = 39724 + 450, 
-                             by =  "row") |> 
-  inspect(time = 11, oxygen =10 ) |>       
-  plot(width= 0.2) 
-
-
-
-ch4_H_mmr_5FL <- ch4_t18_rep_2 |>                              
-  # subset first replicate
-  subset_data(from = 60, # 2 min wait period 
-              to = 300,  # 10 min later 
-              by = "row") |>               
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 60, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                
-  # adjust
-  adjust_rate(by = bg_T18_ch4, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05979, 
-               t =25.8, S = 0, 
-               mass = 0.00054) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE) 
-
+Hmmr_6fl <- mmr_h_func(data = t18,start = 39724,end = 39724 + 450,oxygen = 58,plot_widt= 0.2,
+                       id = Hmmr_6fl, from= 60,to= 450,from1 = 60,rate_width= 0.2,bg_t18_ch4,
+                       v= 0.05979,t= 25.8,m= 0.00054)
 
 # MMR trial 19 -----------------------------------------------------------------
 # Chamber 1 1mp
 # athletic male
-ch1_t19_rep_2 <- subset_data(t19,
-                             from = 35026, # 0827- 56
-                             to = 35026 +  870, 
-                             by = "row") |> 
-  inspect(time= 2, oxygen = 1) |> 
-  plot(width = 0.15) 
-
-
-ch1_H_mmr_1Mp <- ch1_t19_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.15) |>                 
-  # adjust
-  adjust_rate(by = bg_T19_ch1, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-                time.unit = "secs", 
-                output.unit = "mg/h/g", 
-                volume = 0.05641, 
-                t =25.7, S = 0, 
-                mass = 0.000016) |>            
-  # select highest rate
-  select_rate(method = "highest", 
-              n = 1) |>                      
-  summary(export = TRUE)
-
+Hmmr_1mp <- mmr_h_func(data = t19,start = 35026,end = 35026 +  870,oxygen = 4,plot_widt= 0.15,
+                       id = Hmmr_1mp, from= 30,to= 450,from1 = 30,rate_width= 0.15,bg_t19_ch1,
+                       v= 0.05641,t= 25.7,m= 0.00016)
 
 # Chamber 2 1mg
-ch2_t19_rep_2 <- subset_data(t19,
-                             from = 35116, #0830 
-                             to = 35116 + 780, 
-                             by = "row") |> 
-  inspect(time= 5, oxygen = 4) |> 
-  plot(width = 0.15) 
-
-
-ch2_H_mmr_1Mg <- ch2_t19_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bg_T19_ch2, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05752, 
-               t =25.7, S = 0, 
-               mass = 0.00015) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
-
+Hmmr_1mg <- mmr_h_func(data = t19,start = 35116,end = 35116 + 780,oxygen = 22,plot_widt= 0.15,
+                       id = Hmmr_1mg, from= 30,to= 450,from1 = 30,rate_width= 0.2,bg_t19_ch2,
+                       v= 0.05752,t= 25.7,m= 0.00015)
 
 # Chamber 3 1fg
-
-ch3_t19_rep_2 <- subset_data(t19,
-                             from = 35418, # 0840
-                             to = 35418 + 480, 
-                             by = "row") |> 
-  inspect(time= 8, oxygen = 7) |> 
-  plot(width = 0.2)  
-
-
-ch3_H_mmr_1Fg <- ch3_t19_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bg_T19_ch3, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05892, 
-               t =25.7, S = 0, 
-               mass = 0.00041) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
+Hmmr_1fg <- mmr_h_func(data = t19,start = 35418,end = 35418 + 480,oxygen = 40,plot_widt= 0.2,
+                       id = Hmmr_1fg, from= 30,to= 450,from1 = 30,rate_width= 0.2,bg_t19_ch3,
+                       v= 0.05892,t= 25.7,m= 0.00041)
 
 # chamber 4 1fl
-ch4_t19_rep_2 <- subset_data(t19,
-                             from = 35476, #0842
-                             to = 35476 + 435, 
-                             by =  "row") |> 
-  inspect(time = 11, oxygen =10 ) |>       
-  plot(width= 0.2) 
-
-
-
-ch4_H_mmr_1FL <- ch4_t19_rep_2 |>                              
-  # subset first replicate
-  subset_data(from = 60, # 2 min wait period 
-              to = 300,  # 10 min later 
-              by = "row") |>               
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 60, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                
-  # adjust
-  adjust_rate(by = bg_T19_ch4, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05981, 
-               t =25.7, S = 0, 
-               mass = 0.00052) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE) 
-
+Hmmr_1fl <- mmr_h_func(data = t19,start = 35476,end = 35476 + 435,oxygen = 58,plot_widt= 0.2,
+                       id = Hmmr_1fl, from= 60,to= 450,from1 = 60,rate_width= 0.2,bg_t19_ch4,
+                       v= 0.05981,t= 25.7,m= 0.00052)
 
 # MMR trial 20 -----------------------------------------------------------------
 # Chamber 1 1mb
-ch1_t20_rep_2 <- subset_data(t20,
-                             from = 45099, # 1128 -1157
-                             to = 45099 +  870, 
-                             by = "row") |> 
-  inspect(time= 2, oxygen = 1) |> 
-  plot(width = 0.15) 
-
-
-ch1_H_mmr_1Mb <- ch1_t20_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.15) |>                 
-  # adjust
-  adjust_rate(by = bg_T20_ch1, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05646, 
-               t =25.4, S = 0, 
-               mass = 0.00011) |>            
-  # select highest rate
-  select_rate(method = "highest", 
-              n = 1) |>                      
-  summary(export = TRUE)
-
+Hmmr_1mb <- mmr_h_func(data = t20,start = 45099,end = 45099 +  870,oxygen = 4,plot_widt= 0.15,
+                       id = Hmmr_1mb, from= 30,to= 450,from1 = 30,rate_width= 0.15,bg_t20_ch1,
+                       v= 0.05646,t= 25.4,m= 0.00011)
 
 # Chamber 2 1ml
-ch2_t20_rep_2 <- subset_data(t20,
-                             from = 45189, # 1131
-                             to = 45189 + 780, 
-                             by = "row") |> 
-  inspect(time= 5, oxygen = 4) |> 
-  plot(width = 0.15) 
-
-
-ch2_H_mmr_1ML <- ch2_t20_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.15) |>                 
-  # adjust
-  adjust_rate(by = bg_T20_ch2, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05755, 
-               t =25.4, S = 0, 
-               mass = 0.00012) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
-
+Hmmr_1ml <- mmr_h_func(data = t20,start = 45189,end = 45189 + 780,oxygen = 22,plot_widt= 0.15,
+                       id = Hmmr_1ml, from= 30,to= 450,from1 = 30,rate_width= 0.15,bg_t20_ch2,
+                       v= 0.05755,t= 25.4,m= 0.00012)
 
 # Chamber 3 1fp
-
-ch3_t20_rep_2 <- subset_data(t20,
-                             from = 45489, # 1141
-                             to = 45489 + 480, 
-                             by = "row") |> 
-  inspect(time= 8, oxygen = 7) |> 
-  plot(width = 0.2)  
-
-
-ch3_H_mmr_1Fp <- ch3_t20_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 300,  # 10 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bg_T20_ch3, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05914, 
-               t =25.4, S = 0, 
-               mass = 0.00019) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
+Hmmr_1fp <- mmr_h_func(data = t20,start = 45489,end = 45489 + 480,oxygen = 40,plot_widt= 0.2,
+                       id = Hmmr_1fp, from= 30,to= 450,from1 = 30,rate_width= 0.2,bg_t20_ch3,
+                       v= 0.05914,t= 25.4,m= 0.00019)
 
 # chamber 4 1fb
-ch4_t20_rep_2 <- subset_data(t20,
-                             from = 45549, #1143
-                             to = 45549 + 420, 
-                             by =  "row") |> 
-  inspect(time = 11, oxygen =10 ) |>       
-  plot(width= 0.2) 
-
-
-
-ch4_H_mmr_1Fb <- ch4_t20_rep_2 |>                              
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 300,  # 10 min later 
-              by = "row") |>               
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 60, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                
-  # adjust
-  adjust_rate(by = bg_T20_ch4, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.06005, 
-               t =25.4, S = 0, 
-               mass = 0.00028) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE) 
-
-
-
+Hmmr_1fb <- mmr_h_func(data = t20,start = 45549,end = 45549 + 420,oxygen = 58,plot_widt= 0.2,
+                       id = Hmmr_1fb, from= 60,to= 510,from1 = 60,rate_width= 0.2,bg_t20_ch4,
+                       v= 0.06005,t= 25.4,m= 0.00028)
 
 # MMR trial 21------------------------------------------------------------------
 
-
-
 # MMR trial 22 -----------------------------------------------------------------
-
 
 # MMR trial 23 -----------------------------------------------------------------
 # Chamber 1 8mb
-ch1_t23_rep_2 <- subset_data(t23,
-                             from = 36836, # 0831- 0859
-                             to = 36836 + 840, 
-                             by = "row") |> 
-  inspect(time= 2, oxygen = 1) |> 
-  plot(width = 0.15) 
-
-
-ch1_H_mmr_8Mb <- ch1_t23_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bg_T23_ch1, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05646, 
-               t =25.2, S = 0, 
-               mass = 0.00011) |>            
-  # select highest rate
-  select_rate(method = "highest", 
-              n = 1) |>                      
-  summary(export = TRUE)
-
-
+Hmmr_8mb <- mmr_h_func(data = t23,start = 36836,end = 36836 + 840,oxygen = 4,plot_widt= 0.15,
+                       id = Hmmr_8mb, from= 30,to= 450,from1 = 30,rate_width= 0.2,bg_t23_ch1,
+                       v= 0.05646,t= 25.2,m= 0.00011)
 # Chamber 2 8mg
-ch2_t23_rep_2 <- subset_data(t23,
-                             from = 36896, # 0833
-                             to = 36896 + 780, 
-                             by = "row") |> 
-  inspect(time= 5, oxygen = 4) |> 
-  plot(width = 0.15) 
-
-
-ch2_H_mmr_8Mg <- ch2_t23_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.15) |>                 
-  # adjust
-  adjust_rate(by = bg_T23_ch2, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05755, 
-               t =25.2, S = 0, 
-               mass = 0.00012) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
-
+Hmmr_8mg <- mmr_h_func(data = t23,start = 36896,end = 36896 + 780,oxygen = 22,plot_widt= 0.15,
+                       id = Hmmr_8mg, from= 30,to= 450,from1 = 30,rate_width= 0.2,bg_t23_ch2,
+                       v= 0.05755,t= 25.2,m= 0.00012)
 
 # Chamber 3 8fb
-
-ch3_t23_rep_2 <- subset_data(t23,
-                             from = 37166, # 0842
-                             to = 37166 + 510, 
-                             by = "row") |> 
-  inspect(time= 8, oxygen = 7) |> 
-  plot(width = 0.2)  
-
-
-ch3_H_mmr_8Fb <- ch3_t23_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bg_T23_ch3, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05899, 
-               t =25.2, S = 0, 
-               mass = 0.00034) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
+Hmmr_8fb <- mmr_h_func(data = t23,start = 37166,end = 37166 + 510,oxygen = 40,plot_widt= 0.2,
+                       id = Hmmr_8fb, from= 30,to= 450,from1 = 30,rate_width= 0.2,bg_t23_ch3,
+                       v= 0.05899,t= 25.2,m= 0.00034)
 
 # chamber 4 8fg
-ch4_t23_rep_2 <- subset_data(t23,
-                             from = 37256, #0845
-                             to = 37256 + 420, 
-                             by =  "row") |> 
-  inspect(time = 11, oxygen =10 ) |>       
-  plot(width= 0.2) 
-
-
-
-ch4_H_mmr_8Fg <- ch4_t23_rep_2 |>                              
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 300,  # 10 min later 
-              by = "row") |>               
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 60, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                
-  # adjust
-  adjust_rate(by = bg_T23_ch4, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05950, 
-               t =25.2, S = 0, 
-               mass = 0.00083) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE) 
-
-
-
-
+Hmmr_8fg <- mmr_h_func(data = t23,start = 37256,end = 37256 + 420,oxygen = 58,plot_widt= 0.2,
+                       id = Hmmr_8fg, from= 60,to= 450,from1 = 60,rate_width= 0.2,bg_t23_ch4,
+                       v= 0.05950,t= 25.2,m= 0.00083)
 
 # MMR trial 24 -----------------------------------------------------------------
 # Chamber 1 8ml
-ch1_t24_rep_2 <- subset_data(t24,
-                             from = 39466, # 0830 - 58
-                             to = 39466 + 840, 
-                             by = "row") |> 
-  inspect(time= 2, oxygen = 1) |> 
-  plot(width = 0.15) 
-
-
-ch1_H_mmr_8ML <- ch1_t24_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bg_T24_ch1, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05642, 
-               t =24.9, S = 0, 
-               mass = 0.00015) |>            
-  # select highest rate
-  select_rate(method = "highest", 
-              n = 1) |>                      
-  summary(export = TRUE)
-
-
+Hmmr_8ml <- mmr_h_func(data = t24,start = 39466,end = 39466 + 840,oxygen = 4,plot_widt= 0.15,
+                       id = Hmmr_8ml, from= 30,to= 450,from1 = 30,rate_width= 0.2,bg_t24_ch1,
+                       v= 0.05642,t= 24.9,m= 0.00015)
 # Chamber 2 8mp
-ch2_t24_rep_2 <- subset_data(t24,
-                             from = 39556, # 0833
-                             to = 39556 + 750, 
-                             by = "row") |> 
-  inspect(time= 5, oxygen = 4) |> 
-  plot(width = 0.15) 
-
-
-ch2_H_mmr_8Mp <- ch2_t24_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.15) |>                 
-  # adjust
-  adjust_rate(by = bg_T24_ch2, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05736, 
-               t =24.9, S = 0, 
-               mass = 0.00031) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
-
+Hmmr_8mp <- mmr_h_func(data = t24,start = 39556,end = 39556 + 750,oxygen = 22,plot_widt= 0.15,
+                       id = Hmmr_8mp, from= 30,to= 450,from1 = 30,rate_width= 0.15,bg_t24_ch2,
+                       v= 0.05736,t= 24.9,m= 0.00031)
 
 # Chamber 3 8fp
-
-ch3_t24_rep_2 <- subset_data(t24,
-                             from = 39796, # 0841
-                             to = 39796 + 510, 
-                             by = "row") |> 
-  inspect(time= 8, oxygen = 7) |> 
-  plot(width = 0.2)  
-
-
-ch3_H_mmr_8Fp <- ch3_t24_rep_2 |> 
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 450,  # 15 min later 
-              by = "row") |>                
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 30, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                 
-  # adjust
-  adjust_rate(by = bg_T24_ch3, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05884, 
-               t =24.9, S = 0, 
-               mass = 0.00049) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE)
-
+Hmmr_8fp <- mmr_h_func(data = t24,start = 39796,end = 39796 + 510,oxygen = 40,plot_widt= 0.2,
+                       id = Hmmr_8fp, from= 30,to= 450,from1 = 30,rate_width= 0.2,bg_t24_ch3,
+                       v= 0.05884,t= 24.9,m= 0.00049)
 
 # chamber 4 8fl
-ch4_t24_rep_2 <- subset_data(t24,
-                             from = 39886, #0844
-                             to = 39886 + 420, 
-                             by =  "row") |> 
-  inspect(time = 11, oxygen =10 ) |>       
-  plot(width= 0.2) 
-
-
-
-ch4_H_mmr_8FL <- ch4_t24_rep_2 |>                              
-  # subset first replicate
-  subset_data(from = 30, # 1 min wait period 
-              to = 300,  # 10 min later 
-              by = "row") |>               
-  
-  # subset again to apply a 'wait' period
-  subset_data(from = 60, 
-              by = "row") |>                
-  
-  # use auto_rate to get most linear regions
-  auto_rate(width = 0.2) |>                
-  # adjust
-  adjust_rate(by = bg_T24_ch4, 
-              method = "value") |>         
-  # convert
-  convert_rate(oxy.unit = "%Air", 
-               time.unit = "secs", 
-               output.unit = "mg/h/g", 
-               volume = 0.05959, 
-               t =24.9, S = 0, 
-               mass = 0.00074) |>            
-  # select highest rate 
-  select_rate(method = "highest", 
-              n = 1) |>                     
-  summary(export = TRUE) 
-
-
+Hmmr_8fl <- mmr_h_func(data = t24,start = 39886,end = 39886 + 420,oxygen = 58,plot_widt= 0.2,
+                       id = Hmmr_8fl, from= 60,to= 450,from1 = 60,rate_width= 0.2,bg_t24_ch4,
+                       v= 0.05959,t= 24.9,m= 0.00074)
 
 
 
