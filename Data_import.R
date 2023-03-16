@@ -4,15 +4,19 @@ library(lubridate)
 
 #raw file import + cleaning -> individual measuments ---------------------------------------------------------------
 
-#Raw_resp <- read_xlsx("Respirometry_data\\Respirometry_data.xlsx") # må fikses
+Raw_data <- read_xlsx("Respirometry_data/Respirometry_data.xlsx") # må fikses
 
 # Trial 1
 t1 <- import_file("Respirometry_data/Raw data/30_09_T1/2022-09-30_102340_30_09_T1.txt") 
 
+    
+
 
 # Trial 2
 
-t2 <- import_file("Respirometry_data/Raw data/2022-10-01_101553_01_10_T2/2022-10-01_101553_01_10_T2.txt") 
+t2 <- import_file("Respirometry_data/Raw data/2022-10-01_101553_01_10_T2/2022-10-01_101553_01_10_T2.txt")|> 
+  format_time(time = 1:2, format = "dmyHMS") |> 
+    mutate(across(c('time_num'), round, 1))
 
 # trial 3
 t3 <- import_file() # må ta inn alle 4 kanaler enkle
@@ -22,7 +26,7 @@ t4 <- # to filer enf ra 9-14 og 14-dagen etterpå
   
 # trial 5
 
-t5 <- import_file("Respirometry_data/Raw data/2022-10-04_102546_04_10_T5/2022-10-04_102546_04_10_T5.txt")
+t5 <- import_file("Respirometry_data/Raw data/2022-10-04_102546_04_10_T5/2022-10-04_102546_04_10_T5.txt") 
 
 # trial 6
 

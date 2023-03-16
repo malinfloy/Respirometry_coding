@@ -36,16 +36,52 @@ id <- rep_1 |>
   summary(export = TRUE)
 }
 
+mmr_h_func_concurrent <-function(data,start,end,oxygen,plot_width,id,from,to,from1, 
+                      rate_width,rates,bg,v,t,m, ...)
+{rep_1 <- subset_data(data,
+                      from = start,
+                      to = end, 
+                      by = "row") |> 
+  inspect(time= 3, oxygen = oxygen) |> 
+  plot(width = plot_width) 
+
+id <- rep_1 |> 
+  # subset first replicate
+  subset_data(from = from, 
+              to = to,  
+              by = "row") |>                
+  # subset again to apply a 'wait' period
+  subset_data(from = from1, 
+              by = "row") |>                
+  # use auto_rate to get most linear regions
+  auto_rate(width = rate_width) |>
+  # adjust
+  adjust_rate(rates,
+              by = bg, 
+              method = "concurrent") |>
+  # convert
+  convert_rate(oxy.unit = "%Air", 
+               time.unit = "secs", 
+               output.unit = "mg/h/g", 
+               volume = v, 
+               t =t, S = 0, 
+               mass = m) |>            
+  # select highest rate
+  select_rate(method = "highest", 
+              n = 1) |>                      
+  summary(export = TRUE)
+}
+
 #needs to be fixed, wrong bg!! trial 1-4!!! now without bg!!!! and t10,13,14,17,21,22
 
 # Trial 1----------------------------------------------------
 #chamber 1 2ml
-Hmmr_2ml <- mmr_h_func(t1,39479,39479 + 600,4,0.15,Hmmr_2ml, 
-                       30,450,30,0.15,
+Hmmr_2ml <- mmr_h_func_concurrent(t1,39479,39479 + 600,4,0.15,Hmmr_2ml, 
+                       30,450,30,0.15,bg_ch1, bg_1,
                        0.05643,25.1,0.00014)
 # Chamber 2 2mg 
-Hmmr_2mg <- mmr_h_func(data = t1,start = 39809,end = 39809 + 450,oxygen = 22,plot_widt=0.15,
-                       id= Hmmr_2mg, from= 30,to= 450,from1 =30,rate_width=0.15,
+Hmmr_2mg <- mmr_h_func_concurrent(data = t1,start = 39809,end = 39809 + 450,oxygen = 22,plot_widt=0.15,
+                       id= Hmmr_2mg, from= 30,to= 450,from1 =30,rate_width=0.15, bg_ch2,
                        v=0.05760,t=25.1,m=0.00007)
 
 

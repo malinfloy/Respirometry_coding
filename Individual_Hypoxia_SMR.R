@@ -1,11 +1,11 @@
-# SMR for all individuals during normoxia conditions
+# SMR for all individuals during hypoxia conditions
 
 
 # Trial 1 ----
 # Chamber 1 - 2ml
-Nsmr_2ml <- t1 |>  
-  inspect(time= 3, oxygen = 4) |>
-  subset_data(from = 3430,  # from after 4 slopes since we changed the measurement time 
+Hsmr_2ml <- t1 |>  
+  inspect(time = 3, oxygen = 4) |>
+  subset_data(from = 3430,   
               to = 33400, 
               by = "row") |>
   
@@ -38,8 +38,8 @@ Nsmr_2ml <- t1 |>
   mean()
 
 # chamber 2 2mg
-Nsmr_2mg <- t1 |>
-  inspect(time=3, oxygen = 22) |>
+Hsmr_2mg <- t1 |>
+  inspect(time = 3, oxygen = 22) |>
   subset_data(from = 3430, 
               to = 33400, 
               by = "row") |>
@@ -72,8 +72,8 @@ Nsmr_2mg <- t1 |>
   mean()
 
 # Chamber 3 2fg
-Nsmr_2fg <- t1 |>
-  inspect(time= 3, oxygen = 40) |>
+Hsmr_2fg <- t1 |>
+  inspect(time = 3, oxygen = 40) |>
   subset_data(from = 1510, # from 11:14
               to = 33400, 
               by = "row") |>
@@ -108,8 +108,8 @@ Nsmr_2fg <- t1 |>
 
 # chamber 4 2fl
 
-Nsmr_2fl <- t1 |>
-  inspect(time= 3, oxygen = 58) |> 
+Hsmr_2fl <- t1 |>
+  inspect(time = 3, oxygen = 58) |> 
   subset_data(from = 1510, # from 11:14 Seems like the pumps off here
               to = 33400, 
               by = "row") |>
@@ -143,10 +143,10 @@ Nsmr_2fl <- t1 |>
 
 # Trial 2----
 # Chamber 1 - 2mp
-Nsmr_2mp <- t2 |>  
-  inspect(time= 3, oxygen = 4) |>
-  subset_data(from = 2374,  #11:35
-              to = 33550, 
+Hsmr_2mp <- t2 |>  
+  inspect(time = 3, oxygen = 4) |>
+  subset_data(from = 37784, 
+              to = 39582, 
               by = "row") |>
   
   
@@ -178,17 +178,18 @@ Nsmr_2mp <- t2 |>
   mean()
 
 # chamber 2 2mb
-Nsmr_2mb <- t2 |>
-  inspect(time= 3, oxygen = 22) |>
-  subset_data(from = 2374,  #11:35
-              to = 33550, 
+Hsmr_2mb <- t2 |>
+  inspect(time = 3, oxygen = 22) |>
+  subset_data(from = 37784, 
+              to = 39582, 
               by = "row") |>
+  
   
   #extract rates
   auto_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
-    wait = 300,    # 5 min
-    measure = 480, # 8 min
+    wait = 180,    # 3 min
+    measure = 600, # 10 min
     method = "lowest",
     width = 300,   # extract lowest rate from a 5-min duration
     by = "time") |>
@@ -212,19 +213,19 @@ Nsmr_2mb <- t2 |>
   mean()
 
 # Chamber 3 2fb
-Nsmr_2fb <- t2 |>
-  inspect(time= 3, oxygen = 40) |>
-  subset_data(from = 2224,  #11:30
-              to = 33550, 
+Hsmr_2fb <- t2 |>
+  inspect(time = 3, oxygen = 40) |>
+  subset_data(from = 37336,  
+              to = 39582, 
               by = "row") |>
   
   #extract rates
-  calc_rate.int(
+  auto_rate.int(
     starts = 900,  # 10 min measure + 5 min flush
     wait = 120,    # 2 min
     measure = 420, # 7 min
     method = "lowest",
-    width = 180,   # extract lowest rate from a 3-min duration
+    width = 300,   # extract lowest rate from a 5-min duration
     by = "time") |>
   
   #Adjust the rates
@@ -248,19 +249,19 @@ Nsmr_2fb <- t2 |>
 
 # chamber 4 2fp
 
-Nsmr_2fp <- t2 |>
-  inspect(time= 3, oxygen = 58) |> 
-  subset_data(from = 2224,  #11:30
-              to = 33550, 
+Hsmr_2fp <- t2 |>
+  inspect(time = 3, oxygen = 58) |> 
+  subset_data(from = 37336,  
+              to = 39582, 
               by = "row") |>
   
   #extract rates
-  calc_rate.int(
+  auto_rate.int(
     starts = 900,  # 10 min measure + 5 min flush
     wait = 120,    # 2 min
     measure = 420, # 7 min
     method = "lowest",
-    width = 180,   # extract lowest rate from a 3-min duration
+    width = 300,   # extract lowest rate from a 5-min duration
     by = "time") |>
   
   #Adjust the rates
@@ -285,15 +286,15 @@ Nsmr_2fp <- t2 |>
 # Trial 4----
 # Trial 5----
 # Chamber 1 - 7ml
-Nsmr_7mL <- t5 |>  
-  inspect(time= 3, oxygen =4) |>
-  subset_data(from = 1477, # flush started 11:10 - Ended 11:15, from = 11:15
-              to = 33727, # 42 cycles later around 05:10 am. 50 min before hypoxia treatment
+Hsmr_7mL <- t5 |>  
+  inspect(time = 3, oxygen = 4) |>
+  subset_data(from = 36882, 
+              to = 38674, 
               by = "row") |>
   
   
   #extract rates
-  auto_rate.int(
+  calc_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
     wait = 240,    # 4 min
     measure = 600, # 10 min
@@ -321,14 +322,14 @@ Nsmr_7mL <- t5 |>
   mean()
 
 # chamber 2 7Mb
-Nsmr_7mb <- t5 |>
-  inspect(time=3, oxygen = 22) |>
-  subset_data(from = 1477, 
-              to = 33727, 
+Hsmr_7mb <- t5 |>
+  inspect(time = 3, oxygen = 22) |>
+  subset_data(from = 36882, 
+              to = 38674, 
               by = "row") |>
   
   #extract rates
-  auto_rate.int(
+  calc_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
     wait = 240,    # 4 min
     measure = 600, # 10 min
@@ -355,19 +356,19 @@ Nsmr_7mb <- t5 |>
   mean()
 
 # Chamber 3 7fb
-Nsmr_7Fb <- t5 |>
-  inspect(time= 3, oxygen = 40) |>
-  subset_data(from = 1477, 
-              to = 32900, # 70 cycles after 
+Hsmr_7Fb <- t5 |>
+  inspect(time = 3, oxygen = 40) |>
+  subset_data(from = 37025, 
+              to = 38674, 
               by = "row") |>
   
   #extract rates
-  auto_rate.int(
+  calc_rate.int(
     starts = 900,  # 10 min measure + 5 min flush
-    wait = 120,    # 2 min
-    measure = 300, # 5 min
+    wait = 180,    # 3 min
+    measure = 420, # 7 min
     method = "lowest",
-    width = 180,   # extract lowest rate from a 3-min duration
+    width = 300,   # extract lowest rate from a 5-min duration
     by = "time") |>
   
   #Adjust the rates
@@ -391,19 +392,19 @@ Nsmr_7Fb <- t5 |>
 
 # chamber 4 7fp
 
-Nsmr_7Fp <- t5 |>
-  inspect(time= 3, oxygen = 58) |> 
-  subset_data(from = 1477, 
-              to = 32900, # 70 cycles after 
+Hsmr_7Fp <- t5 |>
+  inspect(time = 3, oxygen = 58) |> 
+  subset_data(from = 37025, 
+              to = 38674, 
               by = "row") |>
   
   #extract rates
   auto_rate.int(
     starts = 900,  # 10 min measure + 5 min flush
-    wait = 120,    # 2 min
-    measure = 300, # 5 min
+    wait = 180,    # 3 min
+    measure = 420, # 7 min
     method = "lowest",
-    width = 180,   # extract lowest rate from a 3-min duration
+    width = 300,   # extract lowest rate from a 5-min duration
     by = "time") |>
   
   #Adjust the rates
@@ -427,12 +428,11 @@ Nsmr_7Fp <- t5 |>
 
 # Trial 6----
 # Chamber 1 7mp
-Nsmr_7mp <- t6 |>
-  inspect(time= 3, oxygen = 4) |> 
-  subset_data(from = 1416, # flush ended 1108
-              to = 32600, # 52 cycles
+Hsmr_7mp <- t6 |>
+  inspect(time = 3, oxygen = 4) |> 
+  subset_data(from = 36657, 
+              to = 39004, 
               by = "row") |>
-  
   #extract rates
   auto_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
@@ -461,14 +461,14 @@ Nsmr_7mp <- t6 |>
   mean()
 
 # Chamber 2 7mg 
-Nsmr_7Mg <- t6 |>
-  inspect(time=3, oxygen =4) |>
-  subset_data(from = 1416, # flush ended 1108
-              to = 32600, 
+Hsmr_7Mg <- t6 |>
+  inspect(time = 3, oxygen = 22) |>
+  subset_data(from = 36821, 
+              to = 39004, 
               by = "row") |>
   
   #extract rates
-  auto_rate.int(
+  calc_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
     wait = 240,    # 4 min
     measure = 600, # 10 min
@@ -495,10 +495,10 @@ Nsmr_7Mg <- t6 |>
   mean()
 
 # chamber 3 7fl
-Nsmr_7FL <-t6 |>
-  inspect(time=3, oxygen = 40) |> 
-  subset_data(from = 1408, # flush ended 1108
-              to = 32650, 
+Hsmr_7FL <-t6 |>
+  inspect(time = 3, oxygen = 40) |> 
+  subset_data(from = 36970, 
+              to = 39004, 
               by = "row") |>
   
   #extract rates
@@ -530,10 +530,10 @@ Nsmr_7FL <-t6 |>
 
 #Chamber 4 7fg
 
-Nsmr_7fg <-t6 |>
-  inspect(time=3, oxygen = 40) |> 
-  subset_data(from = 1408, # flush ended 1108
-              to = 32650, 
+Hsmr_7fg <-t6 |>
+  inspect(time = 3, oxygen = 58) |> 
+  subset_data(from = 36970, 
+              to = 39004, 
               by = "row") |>
   
   #extract rates
@@ -565,16 +565,16 @@ Nsmr_7fg <-t6 |>
 
 # Trial 7----
 # Chamber 1 5mg
-Nsmr_5mg <- t7 |>
-  inspect(time= 3, oxygen = 4) |> 
-  subset_data(from = 1314, 
-              to = 33621, 
+Hsmr_5mg <- t7 |>
+  inspect(time = 3, oxygen = 4) |> 
+  subset_data(from = 37320, 
+              to = 39100, 
               by = "row") |>
   
   #extract rates
   auto_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
-    wait = 240,    # 4 min
+    wait = 180,    # 3 min
     measure = 600, # 10 min
     method = "lowest",
     width = 300,   # extract lowest rate from a 5-min duration
@@ -599,16 +599,16 @@ Nsmr_5mg <- t7 |>
   mean()
 
 # Chamber 2 5mp 
-Nsmr_5mp <- t7 |>
-  inspect(time= 3, oxygen =4) |>
-  subset_data(from = 1314, 
-              to = 33621, 
+Hsmr_5mp <- t7 |>
+  inspect(time = 3, oxygen = 22) |>
+  subset_data(from = 37320, 
+              to = 39100, 
               by = "row") |>
   
   #extract rates
   auto_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
-    wait = 300,    # 5 min
+    wait = 180,    # 3 min
     measure = 600, # 10 min
     method = "lowest",
     width = 300,   # extract lowest rate from a 5-min duration
@@ -633,16 +633,16 @@ Nsmr_5mp <- t7 |>
   mean()
 
 # chamber 3 5ml
-Nsmr_5ml <-t7 |>
-  inspect(time= 3, oxygen = 40) |> 
-  subset_data(from = 1314, 
-              to = 33621, 
+Hsmr_5ml <-t7 |>
+  inspect(time = 3, oxygen = 40) |> 
+  subset_data(from = 37320, 
+              to = 39100, 
               by = "row") |>
   
   #extract rates
-  auto_rate.int(
+  calc_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
-    wait = 240,    # 4 min
+    wait = 180,    # 3 min
     measure = 600, # 10 min
     method = "lowest",
     width = 300,   # extract lowest rate from a 5-min duration
@@ -668,16 +668,16 @@ Nsmr_5ml <-t7 |>
 
 #Chamber 4 5fp
 
-Nsmr_5fp <-t7 |>
-  inspect(time= 3, oxygen = 40) |> 
-  subset_data(from = 1314, 
-              to = 33621, 
+Hsmr_5fp <-t7 |>
+  inspect(time = 3, oxygen = 58) |> 
+  subset_data(from = 37320, 
+              to = 39100, 
               by = "row") |>
   
   #extract rates
   auto_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
-    wait = 240,    # 4 min
+    wait = 180,    # 3 min
     measure = 600, # 10 min
     method = "lowest",
     width = 300,   # extract lowest rate from a 5-min duration
@@ -703,13 +703,11 @@ Nsmr_5fp <-t7 |>
 
 # Trial 8----
 # chamber 1 5mb
-# closed pahse goes up - can't use
-Nsmr_5mb <-t8|>  
-  inspect(time= 3, oxygen = 4) |>
-  subset_data(from = 1399, 
-              to = 33300, 
+Hsmr_5mb <-t8|>  
+  inspect(time = 3, oxygen = 4) |>
+  subset_data(from = 36506, 
+              to = 39106, 
               by = "row") |>
-  
   
   #extract rates
   auto_rate.int(
@@ -739,10 +737,10 @@ Nsmr_5mb <-t8|>
   mean()
 
 # chamber 2 5fb
-Nsmr_5fb <-t8|>
-  inspect(time= 3, oxygen = 22) |>
-  subset_data(from = 1399, 
-              to = 33300, 
+Hsmr_5fb <-t8|>
+  inspect(time = 3, oxygen = 22) |>
+  subset_data(from = 36506, 
+              to = 39106, 
               by = "row") |>
   
   #extract rates
@@ -773,10 +771,10 @@ Nsmr_5fb <-t8|>
   mean()
 
 # Chamber 3 5fl
-Nsmr_5fl <-t8|>
-  inspect(time= 3, oxygen = 40) |>
-  subset_data(from = 1399, 
-              to = 33300,  
+Hsmr_5fl <-t8|>
+  inspect(time = 3, oxygen = 40) |>
+  subset_data(from = 36506, 
+              to = 39106,  
               by = "row") |>
   
   #extract rates
@@ -809,10 +807,10 @@ Nsmr_5fl <-t8|>
 
 # chamber 4 5fg
 
-Nsmr_5fg <-t8|>
-  inspect(time= 3, oxygen = 58) |> 
-  subset_data(from = 1399, 
-              to = 33300, 
+Hsmr_5fg <-t8|>
+  inspect(time = 3, oxygen = 58) |> 
+  subset_data(from = 36506, 
+              to = 39106, 
               by = "row") |>
   
   #extract rates
@@ -844,15 +842,15 @@ Nsmr_5fg <-t8|>
 
 # Trial 9----
 # chamber 1 9ml
-Nsmr_9ml <-t9|>  
-  inspect(time= 3, oxygen = 4) |>
-  subset_data(from = 1403, 
-              to = 33600, 
+Hsmr_9ml <-t9|>  
+  inspect(time = 3, oxygen = 4) |>
+  subset_data(from = 37415, 
+              to = 39200, 
               by = "row") |>
   
   
   #extract rates
-  auto_rate.int(
+  calc_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
     wait = 120,    # 2 min
     measure = 600, # 10 min
@@ -879,14 +877,14 @@ Nsmr_9ml <-t9|>
   mean()
 
 # chamber 2 9mg
-Nsmr_9mg <-t9|>
-  inspect(time= 3, oxygen = 22) |>
-  subset_data(from = 1403, 
-              to = 33600, 
+Hsmr_9mg <-t9|>
+  inspect(time = 3, oxygen = 22) |>
+  subset_data(from = 37415, 
+              to = 39200, 
               by = "row") |>
   
   #extract rates
-  auto_rate.int(
+  calc_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
     wait = 240,    # 4 min
     measure = 600, # 10 min
@@ -913,10 +911,10 @@ Nsmr_9mg <-t9|>
   mean()
 
 # Chamber 3 9mp
-Nsmr_9mp <-t9|>
-  inspect(time= 3, oxygen = 40) |>
-  subset_data(from = 1403, 
-              to = 33600, 
+Hsmr_9mp <-t9|>
+  inspect(time = 3, oxygen = 40) |>
+  subset_data(from = 37415, 
+              to = 39200, 
               by = "row") |>
   
   #extract rates
@@ -949,10 +947,10 @@ Nsmr_9mp <-t9|>
 
 # chamber 4 9fb
 
-Nsmr_9fb <-t9|>
-  inspect(time= 3, oxygen = 58) |> 
-  subset_data(from = 1403, 
-              to = 33600, 
+Hsmr_9fb <-t9|>
+  inspect(time = 3, oxygen = 58) |> 
+  subset_data(from = 37415, 
+              to = 39200, 
               by = "row") |>
   
   #extract rates
@@ -984,15 +982,15 @@ Nsmr_9fb <-t9|>
 
 # Trial 10----
 # chamber 1 9mb
-Nsmr_9mb <-t10|>  
-  inspect(time= 3, oxygen = 4) |>
-  subset_data(from = 1465, 
-              to = 33200, 
-              by = "row") |>
+Hsmr_9mb <-t10|>  
+  inspect(time = 3, oxygen = 4) |>
+  subset_data(from = 36567, 
+              to = 38781, 
+              by = "row") |> 
   
   
   #extract rates
-  auto_rate.int(
+  calc_rate.int(
     starts = 900,  # 10 min measure + 5 min flush
     wait = 120,    # 2 min
     measure = 420, # 7 min
@@ -1019,10 +1017,10 @@ Nsmr_9mb <-t10|>
   mean()
 
 # chamber 2 9fl
-Nsmr_9fl <-t10|>
-  inspect(time= 3, oxygen = 22) |>
-  subset_data(from = 1465, 
-              to = 33200, 
+Hsmr_9fl <-t10|>
+  inspect(time = 3, oxygen = 22) |>
+  subset_data(from = 36567, 
+              to = 38781, 
               by = "row") |>
   
   
@@ -1054,10 +1052,10 @@ Nsmr_9fl <-t10|>
   mean()
 
 # Chamber 3 9fp
-Nsmr_9fp <-t10|>
-  inspect(time= 3, oxygen = 40) |>
-  subset_data(from = 1465, 
-              to = 33200, 
+Hsmr_9fp <-t10|>
+  inspect(time = 3, oxygen = 40) |>
+  subset_data(from = 36567, 
+              to = 38781, 
               by = "row") |>
   
   
@@ -1095,15 +1093,15 @@ Nsmr_9fp <-t10|>
 
 # Trial 11----
 #Chamber 1 4mb
-Nsmr_4mb <-t11|>  
-  inspect(time= 3, oxygen = 4) |>
-  subset_data(from = 1481, 
-              to = 33850, 
-              by = "row") |>
+Hsmr_4mb <-t11|>  
+  inspect(time = 3, oxygen = 4) |>
+  subset_data(from = 37480, 
+              to = 39608, 
+              by = "row") |> 
   
   
   #extract rates
-  auto_rate.int(
+  calc_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
     wait = 120,    # 2 min
     measure = 600, # 10 min
@@ -1130,15 +1128,15 @@ Nsmr_4mb <-t11|>
   mean()
 
 # chamber 2 4ml
-Nsmr_4ml <-t11|>
-  inspect(time= 3, oxygen = 22) |>
-  subset_data(from = 1481, 
-              to = 33850, 
+Hsmr_4ml <-t11|>
+  inspect(time = 3, oxygen = 22) |>
+  subset_data(from = 37480, 
+              to = 39608, 
               by = "row") |>
   
   
   #extract rates
-  auto_rate.int(
+  calc_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
     wait = 120,    # 2 min
     measure = 600, # 10 min
@@ -1165,10 +1163,10 @@ Nsmr_4ml <-t11|>
   mean()
 
 # Chamber 3 4fl
-Nsmr_4fl <-t11|>
-  inspect(time= 3, oxygen = 40) |>
-  subset_data(from = 1481, 
-              to = 33850, 
+Hsmr_4fl <-t11|>
+  inspect(time = 3, oxygen = 40) |>
+  subset_data(from = 37480, 
+              to = 39608, 
               by = "row") |>
   
   #extract rates
@@ -1201,10 +1199,10 @@ Nsmr_4fl <-t11|>
 
 # chamber 4 4fb
 
-Nsmr_4fb <-t11|>
-  inspect(time= 3, oxygen = 58) |> 
-  subset_data(from = 1481, 
-              to = 33850, 
+Hsmr_4fb <-t11|>
+  inspect(time = 3, oxygen = 58) |> 
+  subset_data(from = 37480, 
+              to = 39608, 
               by = "row") |>
   
   #extract rates
@@ -1237,10 +1235,10 @@ Nsmr_4fb <-t11|>
 
 # Trial 12----
 #Chamber 1 4mp
-Nsmr_4mp <-t12|>  
-  inspect(time= 3, oxygen = 4) |>
-  subset_data(from = 1575, 
-              to = 33500, 
+Hsmr_4mp <-t12|>  
+  inspect(time = 3, oxygen = 4) |>
+  subset_data(from = 36976, 
+              to = 39365, 
               by = "row") |>
   
   
@@ -1272,15 +1270,15 @@ Nsmr_4mp <-t12|>
   mean()
 
 # chamber 2 4mg
-Nsmr_4mg <-t12|>
-  inspect(time= 3, oxygen = 22) |>
-  subset_data(from = 1575, 
-              to = 33350, 
+Hsmr_4mg <-t12|>
+  inspect(time = 3, oxygen = 22) |>
+  subset_data(from = 36976, 
+              to = 39365, 
               by = "row") |>
   
   
   #extract rates
-  auto_rate.int(
+  calc_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
     wait = 180,    # 3 min
     measure = 600, # 10 min
@@ -1307,10 +1305,10 @@ Nsmr_4mg <-t12|>
   mean()
 
 # Chamber 3 4fp
-Nsmr_4fp <-t12|>
-  inspect(time= 3, oxygen = 40) |>
-  subset_data(from = 1575, 
-              to = 33350, 
+Hsmr_4fp <-t12|>
+  inspect(time = 3, oxygen = 40) |>
+  subset_data(from = 37128, 
+              to = 39365, 
               by = "row") |>
   
   #extract rates
@@ -1343,10 +1341,10 @@ Nsmr_4fp <-t12|>
 
 # chamber 4 4fg
 
-Nsmr_4fg <-t12|>
-  inspect(time= 3, oxygen = 58) |> 
-  subset_data(from = 1575, 
-              to = 33350, 
+Hsmr_4fg <-t12|>
+  inspect(time = 3, oxygen = 58) |> 
+  subset_data(from = 37128, 
+              to = 39365, 
               by = "row") |>
   
   #extract rates
@@ -1378,15 +1376,15 @@ Nsmr_4fg <-t12|>
 
 # Trial 13----
 #Chamber 1 12mp
-Nsmr_12mp <-t13|>  
-  inspect(time= 3, oxygen = 4) |>
-  subset_data(from = 1390, 
-              to = 33055, 
+Hsmr_12mp <-t13|>  
+  inspect(time = 3, oxygen = 4) |>
+  subset_data(from = 36785, 
+              to = 39174, 
               by = "row") |>
   
   
   #extract rates
-  auto_rate.int(
+  calc_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
     wait = 180,    # 3 min
     measure = 600, # 10 min
@@ -1416,10 +1414,10 @@ Nsmr_12mp <-t13|>
 #empty bg data
 
 # Chamber 3 12fg
-Nsmr_12fg <-t13|>
-  inspect(time= 3, oxygen = 40) |>
-  subset_data(from = 1390, 
-              to = 32850, 
+Hsmr_12fg <-t13|>
+  inspect(time = 3, oxygen = 40) |>
+  subset_data(from = 36935, 
+              to = 39174, 
               by = "row") |>
   
   #extract rates
@@ -1452,10 +1450,10 @@ Nsmr_12fg <-t13|>
 
 # chamber 4 12fb
 
-Nsmr_12fb <-t13|>
-  inspect(time= 3, oxygen = 58) |> 
-  subset_data(from = 1390, 
-              to = 32850, 
+Hsmr_12fb <-t13|>
+  inspect(time = 3, oxygen = 58) |> 
+  subset_data(from = 36935, 
+              to = 39174, 
               by = "row") |>
   
   #extract rates
@@ -1484,17 +1482,18 @@ Nsmr_12fb <-t13|>
   select_rate(method = "lowest_percentile", n = 0.1) |>  
   summary() |>
   mean()
+
 # Trial 14----
 #chamber 1 12ml
-Nsmr_12ml <-t14|>  
-  inspect(time= 3, oxygen = 4) |>
-  subset_data(from = 1460, 
-              to = 33512, 
+Hsmr_12ml <-t14|>  
+  inspect(time = 3, oxygen = 4) |>
+  subset_data(from = 36841, 
+              to = 39096, 
               by = "row") |>
   
   
   #extract rates
-  auto_rate.int(
+  calc_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
     wait = 180,    # 3 min
     measure = 600, # 10 min
@@ -1524,10 +1523,10 @@ Nsmr_12ml <-t14|>
 # bg
 
 # Chamber 3 12fl
-Nsmr_12fl <-t14|>
-  inspect(time= 3, oxygen = 40) |>
-  subset_data(from = 1460, 
-              to = 33400, 
+Hsmr_12fl <-t14|>
+  inspect(time = 3, oxygen = 40) |>
+  subset_data(from = 36996, 
+              to = 39096, 
               by = "row") |>
   
   #extract rates
@@ -1560,10 +1559,10 @@ Nsmr_12fl <-t14|>
 
 # chamber 4 12fp
 
-Nsmr_12fp <-t14|>
-  inspect(time= 3, oxygen = 58) |> 
-  subset_data(from = 1460, 
-              to = 33400, 
+Hsmr_12fp <-t14|>
+  inspect(time = 3, oxygen = 58) |> 
+  subset_data(from = 36996, 
+              to = 39096, 
               by = "row") |>
   
   #extract rates
@@ -1592,17 +1591,18 @@ Nsmr_12fp <-t14|>
   select_rate(method = "lowest_percentile", n = 0.1) |>  
   summary() |>
   mean()
+
 # Trial 15----
 #Chamber 1 3mp
-Nsmr_3mp <-t15|>  
-  inspect(time= 3, oxygen = 4) |>
-  subset_data(from = 1400, 
-              to = 33727, 
+Hsmr_3mp <-t15|>  
+  inspect(time = 3, oxygen = 4) |>
+  subset_data(from = 37394, 
+              to = 39188, 
               by = "row") |>
   
   
   #extract rates
-  auto_rate.int(
+  calc_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
     wait = 180,    # 3 min
     measure = 600, # 10 min
@@ -1629,10 +1629,10 @@ Nsmr_3mp <-t15|>
   mean()
 
 # chamber 2 3fb
-Nsmr_3fb <-t15|>
-  inspect(time= 3, oxygen = 22) |>
-  subset_data(from = 1400, 
-              to = 33727, 
+Hsmr_3fb <-t15|>
+  inspect(time = 3, oxygen = 22) |>
+  subset_data(from = 37394, 
+              to = 39188, 
               by = "row") |>
   
   
@@ -1664,10 +1664,10 @@ Nsmr_3fb <-t15|>
   mean()
 
 # Chamber 3 3fl
-Nsmr_3fl <-t15|>
-  inspect(time= 3, oxygen = 40) |>
-  subset_data(from = 1400, 
-              to = 33727, 
+Hsmr_3fl <-t15|>
+  inspect(time = 3, oxygen = 40) |>
+  subset_data(from = 37394, 
+              to = 39188, 
               by = "row") |>
   
   #extract rates
@@ -1700,10 +1700,10 @@ Nsmr_3fl <-t15|>
 
 # chamber 4 3fg
 
-Nsmr_3fg <-t15|>
-  inspect(time= 3, oxygen = 58) |> 
-  subset_data(from = 1400, 
-              to = 33727, 
+Hsmr_3fg <-t15|>
+  inspect(time = 3, oxygen = 58) |> 
+  subset_data(from = 37394, 
+              to = 39188, 
               by = "row") |>
   
   #extract rates
@@ -1735,10 +1735,10 @@ Nsmr_3fg <-t15|>
 
 # Trial 16----
 #Chamber 1 3mg
-Nsmr_3mg <-t16|>  
-  inspect(time= 3, oxygen = 4) |>
-  subset_data(from = 1560, 
-              to = 33076, 
+Hsmr_3mg <-t16|>  
+  inspect(time = 3, oxygen = 4) |>
+  subset_data(from = 36945, 
+              to = 38445, 
               by = "row") |>
   
   
@@ -1761,7 +1761,7 @@ Nsmr_3mg <-t16|>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05645, 
-               t =24.3, S = 0, 
+               t =24.2, S = 0, 
                mass = 0.00012) |>
   
   # Select rate
@@ -1770,10 +1770,10 @@ Nsmr_3mg <-t16|>
   mean()
 
 # chamber 2 3ml
-Nsmr_3ml <-t16|>
-  inspect(time= 3, oxygen = 22) |>
-  subset_data(from = 1560, 
-              to = 33076, 
+Hsmr_3ml <-t16|>
+  inspect(time = 3, oxygen = 22) |>
+  subset_data(from = 36945, 
+              to = 38445, 
               by = "row") |>
   
   
@@ -1796,7 +1796,7 @@ Nsmr_3ml <-t16|>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05756, 
-               t =24.3, S = 0, 
+               t =24.2, S = 0, 
                mass = 0.00011)|>
   
   # Select rate
@@ -1805,10 +1805,10 @@ Nsmr_3ml <-t16|>
   mean()
 
 # Chamber 3 3fp
-Nsmr_3fp <-t16|>
-  inspect(time= 3, oxygen = 40) |>
-  subset_data(from = 1560, 
-              to = 33000, 
+Hsmr_3fp <-t16|>
+  inspect(time = 3, oxygen = 40) |>
+  subset_data(from = 36646, 
+              to = 38445, 
               by = "row") |>
   
   #extract rates
@@ -1830,7 +1830,7 @@ Nsmr_3fp <-t16|>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05904, 
-               t =24.3, S = 0, 
+               t =24.2, S = 0, 
                mass = 0.00029) |>
   
   # Select rate
@@ -1845,10 +1845,10 @@ Nsmr_3fp <-t16|>
 # Trial 17----
 
 #Chamber 1 6mp
-Nsmr_6mp <-t17|>  
-  inspect(time= 3, oxygen = 4) |>
-  subset_data(from = 1621, 
-              to = 31000, 
+Hsmr_6mp <-t17|>  
+  inspect(time = 3, oxygen = 4) |>
+  subset_data(from = 34638, 
+              to = 36858, 
               by = "row") |>
   
   
@@ -1871,7 +1871,7 @@ Nsmr_6mp <-t17|>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05648, 
-               t =26, S = 0, 
+               t =24.3, S = 0, 
                mass = 0.00009) |>
   
   # Select rate
@@ -1880,10 +1880,10 @@ Nsmr_6mp <-t17|>
   mean()
 
 # chamber 2 6mg
-Nsmr_6mg <-t17|>
-  inspect(time= 3, oxygen = 22) |>
-  subset_data(from = 1621, 
-              to = 31000, 
+Hsmr_6mg <-t17|>
+  inspect(time = 3, oxygen = 22) |>
+  subset_data(from = 34638, 
+              to = 36258, 
               by = "row") |>
   
   
@@ -1906,7 +1906,7 @@ Nsmr_6mg <-t17|>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05761, 
-               t =26, S = 0, 
+               t =24.3, S = 0, 
                mass = 0.00006)|>
   
   # Select rate
@@ -1915,10 +1915,10 @@ Nsmr_6mg <-t17|>
   mean()
 
 # Chamber 3 6fb
-Nsmr_6fb <-t17|>
-  inspect(time= 3, oxygen = 40) |>
-  subset_data(from = 1621, 
-              to = 30850, 
+Hsmr_6fb <-t17|>
+  inspect(time = 3, oxygen = 40) |>
+  subset_data(from = 34907, 
+              to = 36587, 
               by = "row") |>
   
   #extract rates
@@ -1940,7 +1940,7 @@ Nsmr_6fb <-t17|>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05893, 
-               t =26, S = 0, 
+               t =24.3, S = 0, 
                mass = 0.00040) |>
   
   # Select rate
@@ -1954,15 +1954,15 @@ Nsmr_6fb <-t17|>
 # Trial 18----
 
 #Chamber 1 6mb
-Nsmr_6mb <-t18|>  
-  inspect(time= 3, oxygen = 4) |>
-  subset_data(from = 1520, 
-              to = 33065, 
+Hsmr_6mb <-t18|>  
+  inspect(time = 3, oxygen = 4) |>
+  subset_data(from = 36905, 
+              to = 38655, 
               by = "row") |>
   
   
   #extract rates
-  auto_rate.int(
+  calc_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
     wait = 180,    # 3 min
     measure = 600, # 10 min
@@ -1980,7 +1980,7 @@ Nsmr_6mb <-t18|>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05649, 
-               t =24.5, S = 0, 
+               t =25.9, S = 0, 
                mass = 0.00008) |>
   
   # Select rate
@@ -1989,10 +1989,10 @@ Nsmr_6mb <-t18|>
   mean()
 
 # chamber 2 6fp
-Nsmr_6fp <-t18|>
-  inspect(time= 3, oxygen = 22) |>
-  subset_data(from = 1520, 
-              to = 33065, 
+Hsmr_6fp <-t18|>
+  inspect(time = 3, oxygen = 22) |>
+  subset_data(from = 36905, 
+              to = 38655, 
               by = "row") |>
   
   
@@ -2015,7 +2015,7 @@ Nsmr_6fp <-t18|>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05739, 
-               t =24.5, S = 0, 
+               t =25.9, S = 0, 
                mass = 0.00028)|>
   
   # Select rate
@@ -2024,10 +2024,10 @@ Nsmr_6fp <-t18|>
   mean()
 
 # Chamber 3 6fg
-Nsmr_6fg <-t18|>
-  inspect(time= 3, oxygen = 40) |>
-  subset_data(from = 1520, 
-              to = 33000, 
+Hsmr_6fg <-t18|>
+  inspect(time = 3, oxygen = 40) |>
+  subset_data(from = 37056, 
+              to = 38807, 
               by = "row") |>
   
   #extract rates
@@ -2049,7 +2049,7 @@ Nsmr_6fg <-t18|>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05896, 
-               t =24.5, S = 0, 
+               t =25.9, S = 0, 
                mass = 0.00037) |>
   
   # Select rate
@@ -2060,10 +2060,10 @@ Nsmr_6fg <-t18|>
 
 # chamber 4 6fl
 
-Nsmr_6fl <-t18|>
-  inspect(time= 3, oxygen = 58) |> 
-  subset_data(from = 1520, 
-              to = 33000, 
+Hsmr_6fl <-t18|>
+  inspect(time = 3, oxygen = 58) |> 
+  subset_data(from = 37056, 
+              to = 38807, 
               by = "row") |>
   
   #extract rates
@@ -2085,7 +2085,7 @@ Nsmr_6fl <-t18|>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05979, 
-               t =24.5, S = 0, 
+               t =25.9, S = 0, 
                mass = 0.00054) |>
   
   # Select rate
@@ -2095,10 +2095,10 @@ Nsmr_6fl <-t18|>
 
 # Trial 19----
 #Chamber 1 1mp
-Nsmr_1mp <-t19|>  
-  inspect(time= 3, oxygen = 4) |>
-  subset_data(from = 1443, 
-              to = 28818, 
+Hsmr_1mp <-t19|>  
+  inspect(time = 3, oxygen = 4) |>
+  subset_data(from = 33228, 
+              to = 34427, 
               by = "row") |>
   
   
@@ -2121,7 +2121,7 @@ Nsmr_1mp <-t19|>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05641, 
-               t =25.2, S = 0, 
+               t =25.9, S = 0, 
                mass = 0.000016) |>
   
   # Select rate
@@ -2130,10 +2130,10 @@ Nsmr_1mp <-t19|>
   mean()
 
 # chamber 2 1mg
-Nsmr_1mg <-t19|>
-  inspect(time= 3, oxygen = 22) |>
-  subset_data(from = 1443, 
-              to = 28818, 
+Hsmr_1mg <-t19|>
+  inspect(time = 3, oxygen = 22) |>
+  subset_data(from = 33228, 
+              to = 34427, 
               by = "row") |>
   
   
@@ -2156,7 +2156,7 @@ Nsmr_1mg <-t19|>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05752, 
-               t =25.2, S = 0, 
+               t =25.9, S = 0, 
                mass = 0.00015)|>
   
   # Select rate
@@ -2165,10 +2165,10 @@ Nsmr_1mg <-t19|>
   mean()
 
 # Chamber 3 1fg
-Nsmr_1fg <-t19|>
-  inspect(time= 3, oxygen = 40) |>
-  subset_data(from = 1443, 
-              to = 28818, 
+Hsmr_1fg <-t19|>
+  inspect(time = 3, oxygen = 40) |>
+  subset_data(from = 32478, 
+              to = 34638, 
               by = "row") |>
   
   #extract rates
@@ -2190,7 +2190,7 @@ Nsmr_1fg <-t19|>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05892, 
-               t =25.2, S = 0, 
+               t =25.9, S = 0, 
                mass = 0.00041) |>
   
   # Select rate
@@ -2201,10 +2201,10 @@ Nsmr_1fg <-t19|>
 
 # chamber 4 1fl
 
-Nsmr_1fl <-t19|>
-  inspect(time= 3, oxygen = 58) |> 
-  subset_data(from = 1443, 
-              to = 28818, 
+Hsmr_1fl <-t19|>
+  inspect(time = 3, oxygen = 58) |> 
+  subset_data(from = 32478, 
+              to = 34638, 
               by = "row") |>
   
   #extract rates
@@ -2226,19 +2226,20 @@ Nsmr_1fl <-t19|>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05981, 
-               t =25.2, S = 0, 
+               t =25.9, S = 0, 
                mass = 0.00052) |>
   
   # Select rate
   select_rate(method = "lowest_percentile", n = 0.1) |>  
   summary() |>
   mean()
+
 # Trial 20----
 #Chamber 1 1mb
-Nsmr_1mb <-t20|>  
-  inspect(time= 3, oxygen = 4) |>
-  subset_data(from = 1435, 
-              to = 33200, 
+Hsmr_1mb <-t20|>  
+  inspect(time = 3, oxygen = 4) |>
+  subset_data(from = 42220, 
+              to = 44600, 
               by = "row") |>
   
   
@@ -2261,7 +2262,7 @@ Nsmr_1mb <-t20|>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05646, 
-               t =25.4, S = 0, 
+               t =25.7, S = 0, 
                mass = 0.00011) |>
   
   # Select rate
@@ -2270,10 +2271,10 @@ Nsmr_1mb <-t20|>
   mean()
 
 # chamber 2 1ml
-Nsmr_1ml <-t20|>
-  inspect(time= 3, oxygen = 22) |>
-  subset_data(from = 1435, 
-              to = 33200, 
+Hsmr_1ml <-t20|>
+  inspect(time = 3, oxygen = 22) |>
+  subset_data(from = 42220, 
+              to = 44600, 
               by = "row") |>
   
   
@@ -2296,7 +2297,7 @@ Nsmr_1ml <-t20|>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05755, 
-               t =25.4, S = 0, 
+               t =25.7, S = 0, 
                mass = 0.00012)|>
   
   # Select rate
@@ -2305,10 +2306,10 @@ Nsmr_1ml <-t20|>
   mean()
 
 # Chamber 3 1fp
-Nsmr_1fp <-t20|>
-  inspect(time= 3, oxygen = 40) |>
-  subset_data(from = 1435, 
-              to = 33200, 
+Hsmr_1fp <-t20|>
+  inspect(time = 3, oxygen = 40) |>
+  subset_data(from = 42369, 
+              to = 44600, 
               by = "row") |>
   
   #extract rates
@@ -2330,7 +2331,7 @@ Nsmr_1fp <-t20|>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05914, 
-               t =25.4, S = 0, 
+               t =25.7, S = 0, 
                mass = 0.00019) |>
   
   # Select rate
@@ -2341,10 +2342,10 @@ Nsmr_1fp <-t20|>
 
 # chamber 4 1fb
 
-Nsmr_1fb <-t20|>
-  inspect(time= 3, oxygen = 58) |> 
-  subset_data(from = 1435, 
-              to = 33200, 
+Hsmr_1fb <-t20|>
+  inspect(time = 3, oxygen = 58) |> 
+  subset_data(from = 42369, 
+              to = 44600, 
               by = "row") |>
   
   #extract rates
@@ -2366,7 +2367,7 @@ Nsmr_1fb <-t20|>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.06005, 
-               t =25.4, S = 0, 
+               t =25.7, S = 0, 
                mass = 0.00028) |>
   
   # Select rate
@@ -2378,15 +2379,15 @@ Nsmr_1fb <-t20|>
 # Trial 22----
 # Trial 23----
 #Chamber 1 8mb
-Nsmr_8mb <-t23|>  
-  inspect(time= 3, oxygen = 4) |>
-  subset_data(from = 1390, 
-              to = 30507, 
+Hsmr_8mb <-t23|>  
+  inspect(time = 3, oxygen = 4) |>
+  subset_data(from = 33779, 
+              to = 36080, 
               by = "row") |>
   
   
   #extract rates
-  auto_rate.int(
+  calc_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
     wait = 180,    # 3 min
     measure = 600, # 10 min
@@ -2404,7 +2405,7 @@ Nsmr_8mb <-t23|>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05646, 
-               t =25.1, S = 0, 
+               t =25.4, S = 0, 
                mass = 0.00011) |>
   
   # Select rate
@@ -2413,15 +2414,15 @@ Nsmr_8mb <-t23|>
   mean()
 
 # chamber 2 8mg
-Nsmr_8mg <-t23|>
-  inspect(time= 3, oxygen = 22) |>
-  subset_data(from = 1390, 
-              to = 30507, 
+Hsmr_8mg <-t23|>
+  inspect(time = 3, oxygen = 22) |>
+  subset_data(from = 33779, 
+              to = 36080, 
               by = "row") |>
   
   
   #extract rates
-  auto_rate.int(
+  calc_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
     wait = 180,    # 3 min
     measure = 600, # 10 min
@@ -2439,7 +2440,7 @@ Nsmr_8mg <-t23|>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05755, 
-               t =25.1, S = 0, 
+               t =25.4, S = 0, 
                mass = 0.00012)|>
   
   # Select rate
@@ -2448,10 +2449,10 @@ Nsmr_8mg <-t23|>
   mean()
 
 # Chamber 3 8fb
-Nsmr_8fb <-t23|>
-  inspect(time= 3, oxygen = 40) |>
-  subset_data(from = 1390, 
-              to = 30507, 
+Hsmr_8fb <-t23|>
+  inspect(time = 3, oxygen = 40) |>
+  subset_data(from = 33779, 
+              to = 36459, 
               by = "row") |>
   
   #extract rates
@@ -2473,7 +2474,7 @@ Nsmr_8fb <-t23|>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05899, 
-               t =25.1, S = 0, 
+               t =25.4, S = 0, 
                mass = 0.00034) |>
   
   # Select rate
@@ -2484,10 +2485,10 @@ Nsmr_8fb <-t23|>
 
 # chamber 4 8fg
 
-Nsmr_8fg <-t23|>
-  inspect(time= 3, oxygen = 58) |> 
-  subset_data(from = 1390, 
-              to = 30507, 
+Hsmr_8fg <-t23|>
+  inspect(time = 3, oxygen = 58) |> 
+  subset_data(from = 33779, 
+              to = 36459, 
               by = "row") |>
   
   #extract rates
@@ -2509,19 +2510,20 @@ Nsmr_8fg <-t23|>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05950, 
-               t =25.1, S = 0, 
+               t =25.4, S = 0, 
                mass = 0.00083) |>
   
   # Select rate
   select_rate(method = "lowest_percentile", n = 0.1) |>  
   summary() |>
   mean()
+
 # Trial 24----
 #Chamber 1 8ml
-Nsmr_8ml <-t24|>  
-  inspect(time= 3, oxygen = 4) |>
-  subset_data(from = 1473, 
-              to = 33171, 
+Hsmr_8ml <-t24|>  
+  inspect(time = 3, oxygen = 4) |>
+  subset_data(from = 36858, 
+              to = 39228, 
               by = "row") |>
   
   
@@ -2544,7 +2546,7 @@ Nsmr_8ml <-t24|>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05642, 
-               t =25, S = 0, 
+               t =24.8, S = 0, 
                mass = 0.00015) |>
   
   # Select rate
@@ -2553,10 +2555,10 @@ Nsmr_8ml <-t24|>
   mean()
 
 # chamber 2 8mp
-Nsmr_8mp <-t24|>
-  inspect(time= 3, oxygen = 22) |>
-  subset_data(from = 1473, 
-              to = 33171, 
+Hsmr_8mp <-t24|>
+  inspect(time = 3, oxygen = 22) |>
+  subset_data(from = 36858, 
+              to = 39228, 
               by = "row") |>
   
   
@@ -2579,7 +2581,7 @@ Nsmr_8mp <-t24|>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05736, 
-               t =25, S = 0, 
+               t =24.8, S = 0, 
                mass = 0.00031)|>
   
   # Select rate
@@ -2588,10 +2590,10 @@ Nsmr_8mp <-t24|>
   mean()
 
 # Chamber 3 8fp
-Nsmr_8fp <-t24|>
-  inspect(time= 3, oxygen = 40) |>
-  subset_data(from = 1473, 
-              to = 32900, 
+Hsmr_8fp <-t24|>
+  inspect(time = 3, oxygen = 40) |>
+  subset_data(from = 37007, 
+              to = 39228, 
               by = "row") |>
   
   #extract rates
@@ -2613,7 +2615,7 @@ Nsmr_8fp <-t24|>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05884, 
-               t =25, S = 0, 
+               t =24.8, S = 0, 
                mass = 0.00049) |>
   
   # Select rate
@@ -2624,10 +2626,10 @@ Nsmr_8fp <-t24|>
 
 # chamber 4 8fl
 
-Nsmr_8fl <-t24|>
-  inspect(time= 3, oxygen = 58) |> 
-  subset_data(from = 1473, 
-              to = 32900, 
+Hsmr_8fl <-t24|>
+  inspect(time = 3, oxygen = 58) |> 
+  subset_data(from = 37007, 
+              to = 39228, 
               by = "row") |>
   
   #extract rates
@@ -2649,19 +2651,13 @@ Nsmr_8fl <-t24|>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05959, 
-               t =25, S = 0, 
+               t =24.8, S = 0, 
                mass = 0.00074) |>
   
   # Select rate
   select_rate(method = "lowest_percentile", n = 0.1) |>  
   summary() |>
   mean()
-
-
-
-
-
-
 
 
 
