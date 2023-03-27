@@ -1,4 +1,4 @@
-# function for background done after trial
+# function for background done after trial------
 bg_cal <- function(data,start, end, oxygen)
 {data |> 
     subset_data(from = start, to = end, by = "row") |> 
@@ -7,36 +7,25 @@ bg_cal <- function(data,start, end, oxygen)
 
 #  Background data after trials - flushing on for chamber 1 and 2 on. ----------------
 
-bg_1 <- import_file("Respirometry_data/Raw data/2022-10-24_102444__end_1/2022-10-24_102444__end_1.txt") 
+bg_1 <- import_file("Respirometry_data/Raw data/2022-10-24_102444_background_end_1/2022-10-24_102444_background_end_1.txt")
 
-bgch4_pre <- bg_1_cleaned |> 
-  subset_data(from = 1, to = 1800, by = "row") |>  # an hour of  at beginning
-  inspect(time= 12, oxygen =7) |> 
-  calc_rate.bg() # okay to have flushing here??
-
-bgch4_post <- bg_1_cleaned |> 
-  subset_data(from = 39930, to = 41730, by = "row") |>  # an hour of  at end
-  inspect(time= 12, oxygen = 7) |> 
+bg_ch1 <- bg_1|> 
+  inspect(time = 3, oxygen = 4) |> 
   calc_rate.bg()
 
-
-
-
-
-
+bg_ch2 <- bg_1|> 
+  inspect(time = 3, oxygen = 22) |> 
+  calc_rate.bg()
 
 #  Background data after trials - flushing on for chamber 3 and 4 on. -------------------------------------------------
 bg_2 <- import_file("Respirometry_data/Raw data/2022-10-27_113153_bg_end2/2022-10-27_113153_bg_end2.txt") 
 
+bg_ch3 <- bg_2|> 
+  inspect(time = 3, oxygen = 40) |> 
+  calc_rate.bg()
 
-bgch4_pre <- bg_2_cleaned |> 
-  subset_data(from = 1, to = 1800, by = "row") |>  # an hour of  at beginning
-  inspect(time= 12, oxygen =7) |> 
-  calc_rate.bg() # Flush is on need to fix
-
-bgch4_post <- bg_2_cleaned |> 
-  subset_data(from = 39930, to = 41730, by = "row") |>  # an hour of  at end
-  inspect(time= 12, oxygen = 7) |> 
+bg_ch4 <- bg_2|> 
+  inspect(time = 3, oxygen = 58) |> 
   calc_rate.bg()
 
 
@@ -122,6 +111,9 @@ bg_t9_ch4 <- bg_cal(bg_t9,10,430,58)
 
 
 #  trial 10-------------------------------- 
+bg_t10 <- t10 |> 
+  inspect(time = 3, oxygen = 58) |> 
+  calc_rate.bg()
 
 #  trial 11 ----------------------------------------------------------
 bg_t11 <- import_file("Respirometry_data/Raw data/2022-10-11_084629_bg_t11/2022-10-11_084629_bg_t11.txt")
@@ -156,18 +148,16 @@ bg_t12_ch4 <- bg_cal(bg_t12,10,430,58)
 
 
 #  trial 13 -------------------------------
-
-# Chamber 2 was empty throughout the entire trial, used for background on the other chambers
-bg_t13 <- subset_data(t13, from = 1377, to = 13377, by = "row") |> # 20 cycles in
-  inspect(time = 3, oxygen = 22)
- 
-rates_t13 <- bg_t13 |> 
-calc_rate.int( starts = 600, # 20 min window - 15 min measure, 5 min flush 
-               wait = 90, # 3 min wait
-               measure = 360, # 12 min measure after removing wait period
-               by = "row")
+# chamber 2 empty
+bg_t13 <- t13 |> 
+  inspect(time = 3, oxygen = 22) |> 
+  calc_rate.bg()
 
 #  trial 14-------------------------------
+bg_t14 <- t14 |> 
+  inspect(time = 3, oxygen = 22) |> 
+  calc_rate.bg()
+
 #  trial 15 ----------------------------------------------------------
 bg_t15 <- import_file("Respirometry_data/Raw data/2022-10-15_085411_Bg_t15/2022-10-15_085411_Bg_t15.txt")
 
@@ -197,6 +187,11 @@ bg_t16_ch3 <- bg_cal(bg_t16,10,430,40)
 
 #chamber 4
 bg_t16_ch4 <- bg_cal(bg_t16,10,430,58)
+
+#  trial 17 ----
+bg_t17 <- t17 |> 
+  inspect(time = 3, oxygen = 58) |> 
+  calc_rate.bg()
 
 #  trial 18 ----------------------------------------------------------
 bg_t18 <- import_file("Respirometry_data/Raw data/2022-10-18_090014_bg_t18/2022-10-18_090014_bg_t18.txt")

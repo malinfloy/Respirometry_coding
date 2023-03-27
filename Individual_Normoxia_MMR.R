@@ -35,7 +35,6 @@ mmr_n_func <-function(data,start,end,oxygen,plot_width,id,from,to,from1,
 
 
 # Trial 1----------------------------------------------------
-#needs to be fixed, wrong bg!! trial 1-4!!!
 #chamber 1 2ml
 Nmmr_2ml <- mmr_n_func(t1,520,1390,4,0.15,nmmr_2ml, 
                                 30,450,30,0.15,

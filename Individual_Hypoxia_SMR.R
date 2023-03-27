@@ -21,8 +21,7 @@ Hsmr_2ml <- t1 |>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t1_ch1,
-    method = "value") |>
+    by = bg_ch1) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -55,8 +54,7 @@ Hsmr_2mg <- t1 |>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t1_ch2,
-    method = "value") |>
+    by = bg_ch2) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -89,8 +87,7 @@ Hsmr_2fg <- t1 |>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t1_ch3,
-    method = "value") |>
+    by = bg_ch3) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -125,7 +122,7 @@ Hsmr_2fl <- t1 |>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t1_ch4,
+    by = bg_ch4,
     method = "value") |>
   
   # convert
@@ -161,8 +158,7 @@ Hsmr_2mp <- t2 |>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t2_ch1,
-    method = "value") |>
+    by = bg_ch1) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -196,8 +192,7 @@ Hsmr_2mb <- t2 |>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t2_ch2,
-    method = "value") |>
+    by = bg_ch2) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -230,8 +225,7 @@ Hsmr_2fb <- t2 |>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t2_ch3,
-    method = "value") |>
+    by = bg_ch3) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -266,8 +260,7 @@ Hsmr_2fp <- t2 |>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t2_ch4,
-    method = "value") |>
+    by = bg_ch4) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -1000,8 +993,7 @@ Hsmr_9mb <-t10|>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t10_ch1,
-    method = "value") |>
+    by = bg_t10) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -1035,8 +1027,7 @@ Hsmr_9fl <-t10|>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t10_ch2,
-    method = "value") |>
+    by = bg_t10) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -1070,8 +1061,7 @@ Hsmr_9fp <-t10|>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t10_ch3,
-    method = "value") |>
+    by = bg_t10) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -1394,7 +1384,7 @@ Hsmr_12mp <-t13|>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t13_ch1,
+    by = bg_t13,
     method = "value") |>
   
   # convert
@@ -1431,8 +1421,7 @@ Hsmr_12fg <-t13|>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t13_ch3,
-    method = "value") |>
+    by = bg_t13) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -1467,8 +1456,7 @@ Hsmr_12fb <-t13|>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t13_ch4,
-    method = "value") |>
+    by = bg_t13) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -1503,8 +1491,7 @@ Hsmr_12ml <-t14|>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t14_ch1,
-    method = "value") |>
+    by = bg_t14) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -1540,8 +1527,7 @@ Hsmr_12fl <-t14|>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t14_ch3,
-    method = "value") |>
+    by = bg_t14) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -1576,8 +1562,7 @@ Hsmr_12fp <-t14|>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t14_ch4,
-    method = "value") |>
+    by = bg_t14) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -1863,8 +1848,7 @@ Hsmr_6mp <-t17|>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t17_ch1,
-    method = "value") |>
+    by = bg_t17) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -1898,8 +1882,7 @@ Hsmr_6mg <-t17|>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t17_ch2,
-    method = "value") |>
+    by = bg_t17) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -1932,8 +1915,7 @@ Hsmr_6fb <-t17|>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t17_ch3,
-    method = "value") |>
+    by = bg_t17) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 

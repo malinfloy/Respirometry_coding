@@ -1,5 +1,5 @@
 # SMR for all individuals during normoxia conditions
-
+x <- list()
 
 # Trial 1 ----
 # Chamber 1 - 2ml
@@ -21,8 +21,7 @@ Nsmr_2ml <- t1 |>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t1_ch1,
-    method = "value") |>
+    by = bg_ch1) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -55,8 +54,7 @@ Nsmr_2mg <- t1 |>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t1_ch2,
-    method = "value") |>
+    by = bg_ch2) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -89,8 +87,7 @@ Nsmr_2fg <- t1 |>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t1_ch3,
-    method = "value") |>
+    by = bg_ch3) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -125,8 +122,7 @@ Nsmr_2fl <- t1 |>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t1_ch4,
-    method = "value") |>
+    by = bg_ch4) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -161,8 +157,7 @@ Nsmr_2mp <- t2 |>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t2_ch1,
-    method = "value") |>
+    by = bg_c1) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -195,8 +190,7 @@ Nsmr_2mb <- t2 |>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t2_ch2,
-    method = "value") |>
+    by = bg_ch2) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -229,8 +223,7 @@ Nsmr_2fb <- t2 |>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t2_ch3,
-    method = "value") |>
+    by = bg_ch3) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -265,8 +258,7 @@ Nsmr_2fp <- t2 |>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t2_ch4,
-    method = "value") |>
+    by = bg_ch4) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -285,7 +277,7 @@ Nsmr_2fp <- t2 |>
 # Trial 4----
 # Trial 5----
 # Chamber 1 - 7ml
-Nsmr_7mL <- t5 |>  
+Nsmr_7ml <- t5 |>  
   inspect(time= 3, oxygen =4) |>
   subset_data(from = 1477, # flush started 11:10 - Ended 11:15, from = 11:15
               to = 33727, # 42 cycles later around 05:10 am. 50 min before hypoxia treatment
@@ -318,7 +310,8 @@ Nsmr_7mL <- t5 |>
   # Select rate
   select_rate(method = "lowest_percentile", n = 0.1) |>  # defined that our SMR is the mean of the lowest 10th percentile of the rates from each replicate
   summary() |>
-  mean()
+  mean()  
+
 
 # chamber 2 7Mb
 Nsmr_7mb <- t5 |>
@@ -1002,8 +995,7 @@ Nsmr_9mb <-t10|>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t10_ch1,
-    method = "value") |>
+    by = bg_t10) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -1037,8 +1029,7 @@ Nsmr_9fl <-t10|>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t10_ch2,
-    method = "value") |>
+    by = bg_t10) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -1072,8 +1063,7 @@ Nsmr_9fp <-t10|>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t10_ch3,
-    method = "value") |>
+    by = bg_t10) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -1396,8 +1386,7 @@ Nsmr_12mp <-t13|>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t13_ch1,
-    method = "value") |>
+    by = bg_t13) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -1433,8 +1422,7 @@ Nsmr_12fg <-t13|>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t13_ch3,
-    method = "value") |>
+    by = bg_t13) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -1469,8 +1457,7 @@ Nsmr_12fb <-t13|>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t13_ch4,
-    method = "value") |>
+    by = bg_t13) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -1484,6 +1471,7 @@ Nsmr_12fb <-t13|>
   select_rate(method = "lowest_percentile", n = 0.1) |>  
   summary() |>
   mean()
+
 # Trial 14----
 #chamber 1 12ml
 Nsmr_12ml <-t14|>  
@@ -1504,8 +1492,7 @@ Nsmr_12ml <-t14|>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t14_ch1,
-    method = "value") |>
+    by = bg_t14) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -1541,8 +1528,7 @@ Nsmr_12fl <-t14|>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t14_ch3,
-    method = "value") |>
+    by = bg_t14) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -1577,8 +1563,7 @@ Nsmr_12fp <-t14|>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t14_ch4,
-    method = "value") |>
+    by = bg_t14) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -1592,6 +1577,7 @@ Nsmr_12fp <-t14|>
   select_rate(method = "lowest_percentile", n = 0.1) |>  
   summary() |>
   mean()
+
 # Trial 15----
 #Chamber 1 3mp
 Nsmr_3mp <-t15|>  
@@ -1863,8 +1849,7 @@ Nsmr_6mp <-t17|>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t17_ch1,
-    method = "value") |>
+    by = bg_t17) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -1898,8 +1883,7 @@ Nsmr_6mg <-t17|>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t17_ch2,
-    method = "value") |>
+    by = bg_t17) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
@@ -1932,8 +1916,7 @@ Nsmr_6fb <-t17|>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_t17_ch3,
-    method = "value") |>
+    by = bg_t17) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 
