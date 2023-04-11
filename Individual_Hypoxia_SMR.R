@@ -148,7 +148,7 @@ Hsmr_2mp <- t2 |>
   
   
   #extract rates
-  auto_rate.int(
+  calc_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
     wait = 180,    # 3 min
     measure = 600, # 10 min

@@ -157,7 +157,7 @@ Nsmr_2mp <- t2 |>
   
   #Adjust the rates
   adjust_rate(
-    by = bg_c1) |>
+    by = bg_ch1) |>
   
   # convert
   convert_rate(oxy.unit = "%Air", 

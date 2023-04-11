@@ -16,13 +16,15 @@ t1 <- import_file("Respirometry_data/Raw data/30_09_T1/2022-09-30_102340_30_09_T
 
 t2 <- import_file("Respirometry_data/Raw data/2022-10-01_101553_01_10_T2/2022-10-01_101553_01_10_T2.txt")|> 
   format_time(time = 1:2, format = "dmyHMS") |> 
-    mutate(across(c('time_num'), round, 1))
+    mutate(across(c('time_num'), round, 1))  # incase i want this, this works
 
 # trial 3
-t3 <- import_file() # må ta inn alle 4 kanaler enkle
+t3 <- import_file("Respirometry_data/Raw data/2022-10-02_102759_02_10_T3/t3_allchamber.txt") 
+t3_hypommr <- import_file("Respirometry_data/Raw data/2022-10-03_081328_02_10_T3_HMMR/2022-10-03_081328_02_10_T3_HMMR.txt")
+
 
 # trial 4
-t4 <- # to filer enf ra 9-14 og 14-dagen etterpå
+t4 <- import_file("Respirometry_data/Raw data/2022-10-03_101859_03_10_T4/T4.txt")
   
 # trial 5
 
@@ -77,10 +79,12 @@ t19 <- import_file("Respirometry_data/Raw data/2022-10-18_125922_18_10_T19/2022-
 t20 <- import_file("Respirometry_data/Raw data/2022-10-19_102436_19_10_T20/2022-10-19_102436_19_10_T20.txt")
 
 #Trial 21
-t21 <- import_file # 2 filer, den første inneholder kun litt av MMR normoxia
+t21 <- import_file("Respirometry_data/Raw data/2022-10-20_133810_20_10_T21/2022-10-20_133810_20_10_T21.txt")
 
 # Trial 22
-t22 <- import_file() # to filer her også
+t22 <- import_file("Respirometry_data/Raw data/2022-10-21_103904_21_10_T22/2022-10-21_103904_21_10_T22.txt") 
+
+t22_hypo<- import_file("Respirometry_data/Raw data/2022-10-22_082320_Hypoxia_21_10_T22/2022-10-22_082320_Hypoxia_21_10_T22.txt")
 
 # Trial 23
 t23 <- import_file("Respirometry_data/Raw data/2022-10-22_120302_22_10_T23/2022-10-22_120302_22_10_T23.txt")
