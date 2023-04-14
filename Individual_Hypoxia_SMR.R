@@ -142,13 +142,13 @@ Hsmr_2fl <- t1 |>
 # Chamber 1 - 2mp
 Hsmr_2mp <- t2 |>  
   inspect(time = 3, oxygen = 4) |>
-  subset_data(from = 37784, 
+  subset_data(from = 38384, 
               to = 39582, 
               by = "row") |>
   
   
   #extract rates
-  calc_rate.int(
+  auto_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
     wait = 180,    # 3 min
     measure = 600, # 10 min
@@ -276,10 +276,292 @@ Hsmr_2fp <- t2 |>
   mean()
 
 # Trial 3----
+# Chamber 1 - 10mb
+Hsmr_10mb <- t3 |>  
+  inspect(time= 3, oxygen = 4) |>
+  subset_data(from = 38250, 
+              to = 38847, 
+              by = "row") |>
+  
+  
+  #extract rates
+  calc_rate.int(
+    starts = 1200,  # 15 min measure + 5 min flush
+    wait = 240,    # 4 min
+    measure = 600, # 10 min
+    method = "lowest",
+    width = 300,   # extract lowest rate from a 5-min duration
+    by = "time") |>
+  
+  #Adjust the rates
+  adjust_rate(
+    by = bg_ch1,
+    method = "value") |>
+  
+  # convert
+  convert_rate(
+    oxy.unit = "%Air",
+    time.unit = "secs",
+    output.unit = "mg/h/g",
+    volume = 0.05419,
+    t = 25.2, S = 0,
+    mass = 0.00014) |>
+  
+  # Select rate
+  select_rate(method = "lowest_percentile", n = 0.1) |>  # defined that our SMR is the mean of the lowest 10th percentile of the rates from each replicate
+  summary() |>
+  mean()  
+
+
+# chamber 2 10mp
+Hsmr_10mp <- t3 |>
+  inspect(time=3, oxygen = 22) |>
+  subset_data(from = 38250, 
+              to = 38847, 
+              by = "row") |>
+  
+  #extract rates
+  auto_rate.int(
+    starts = 1200,  # 15 min measure + 5 min flush
+    wait = 240,    # 4 min
+    measure = 600, # 10 min
+    method = "lowest",
+    width = 300,   # extract lowest rate from a 5-min duration
+    by = "time") |>
+  
+  #Adjust the rates
+  adjust_rate(
+    by = bg_ch2,
+    method = "value") |>
+  
+  # convert
+  convert_rate(oxy.unit = "%Air", 
+               time.unit = "secs", 
+               output.unit = "mg/h/g", 
+               volume = 0.05473, 
+               t =25.2, S = 0, 
+               mass = 0.00017) |>
+  
+  # Select rate
+  select_rate(method = "lowest_percentile", n = 0.1) |>  # defined that our SMR is the mean of the lowest 10th percentile of the rates from each replicate
+  summary() |>
+  mean()
+
+# Chamber 3 10mg
+Hsmr_10mg <- t3 |>
+  inspect(time= 3, oxygen = 40) |>
+  subset_data(from = 37650, 
+              to = 38982,  
+              by = "row") |>
+  
+  #extract rates
+  auto_rate.int(
+    starts = 900,  # 10 min measure + 5 min flush
+    wait = 120,    # 2 min
+    measure = 300, # 5 min
+    method = "lowest",
+    width = 180,   # extract lowest rate from a 3-min duration
+    by = "time") |>
+  
+  #Adjust the rates
+  adjust_rate(
+    by = bg_ch3,
+    method = "value") |>
+  
+  # convert
+  convert_rate(oxy.unit = "%Air", 
+               time.unit = "secs", 
+               output.unit = "mg/h/g", 
+               volume = 0.05581, 
+               t =25.2, S = 0, 
+               mass = 0.00016) |>
+  
+  # Select rate
+  select_rate(method = "lowest_percentile", n = 0.1) |>  
+  summary() |>
+  mean()
+
+
+# chamber 4 10fl
+
+Hsmr_10fl <- t3 |>
+  inspect(time= 3, oxygen = 58) |> 
+  subset_data(from = 37650, 
+              to = 38982,
+              by = "row") |>
+  
+  #extract rates
+  auto_rate.int(
+    starts = 900,  # 10 min measure + 5 min flush
+    wait = 120,    # 2 min
+    measure = 300, # 5 min
+    method = "lowest",
+    width = 180,   # extract lowest rate from a 3-min duration
+    by = "time") |>
+  
+  #Adjust the rates
+  adjust_rate(
+    by = bg_ch4,
+    method = "value") |>
+  
+  # convert
+  convert_rate(oxy.unit = "%Air", 
+               time.unit = "secs", 
+               output.unit = "mg/h/g", 
+               volume = 0.05672, 
+               t =25.2, S = 0, 
+               mass = 0.00055) |>
+  
+  # Select rate
+  select_rate(method = "lowest_percentile", n = 0.1) |>  
+  summary() |>
+  mean()
+
 # Trial 4----
+# Chamber 1 - 10mb
+Hsmr_10ml <- t4 |>  
+  inspect(time= 3, oxygen = 4) |>
+  subset_data(from = 38356,  
+              to = 39552, 
+              by = "row") |>
+  
+  
+  #extract rates
+  auto_rate.int(
+    starts = 1200,  # 15 min measure + 5 min flush
+    wait = 240,    # 4 min
+    measure = 600, # 10 min
+    method = "lowest",
+    width = 300,   # extract lowest rate from a 5-min duration
+    by = "time") |>
+  
+  #Adjust the rates
+  adjust_rate(
+    by = bg_ch1,
+    method = "value") |>
+  
+  # convert
+  convert_rate(
+    oxy.unit = "%Air",
+    time.unit = "secs",
+    output.unit = "mg/h/g",
+    volume = 0.05420,
+    t = 25.1, S = 0,
+    mass = 0.00013) |>
+  
+  # Select rate
+  select_rate(method = "lowest_percentile", n = 0.1) |>  # defined that our SMR is the mean of the lowest 10th percentile of the rates from each replicate
+  summary() |>
+  mean()  
+
+
+# chamber 2 10fp
+Hsmr_10fp <- t4 |>
+  inspect(time=3, oxygen = 22) |>
+  subset_data(from = 38356,  
+              to = 39552, 
+              by = "row") |>
+  
+  #extract rates
+  auto_rate.int(
+    starts = 1200,  # 15 min measure + 5 min flush
+    wait = 240,    # 4 min
+    measure = 600, # 10 min
+    method = "lowest",
+    width = 300,   # extract lowest rate from a 5-min duration
+    by = "time") |>
+  
+  #Adjust the rates
+  adjust_rate(
+    by = bg_ch2,
+    method = "value") |>
+  
+  # convert
+  convert_rate(oxy.unit = "%Air", 
+               time.unit = "secs", 
+               output.unit = "mg/h/g", 
+               volume = 0.05447, 
+               t =25.1, S = 0, 
+               mass = 0.00043) |>
+  
+  # Select rate
+  select_rate(method = "lowest_percentile", n = 0.1) |>  # defined that our SMR is the mean of the lowest 10th percentile of the rates from each replicate
+  summary() |>
+  mean()
+
+# Chamber 3 10fg
+Hsmr_10fg <- t4 |>
+  inspect(time= 3, oxygen = 40) |>
+  subset_data(from = 38356,  
+              to = 39552,  
+              by = "row") |>
+  
+  #extract rates
+  auto_rate.int(
+    starts = 900,  # 10 min measure + 5 min flush
+    wait = 120,    # 2 min
+    measure = 300, # 5 min
+    method = "lowest",
+    width = 180,   # extract lowest rate from a 3-min duration
+    by = "time") |>
+  
+  #Adjust the rates
+  adjust_rate(
+    by = bg_ch3,
+    method = "value") |>
+  
+  # convert
+  convert_rate(oxy.unit = "%Air", 
+               time.unit = "secs", 
+               output.unit = "mg/h/g", 
+               volume = 0.05559, 
+               t =25.1, S = 0, 
+               mass = 0.00038) |>
+  
+  # Select rate
+  select_rate(method = "lowest_percentile", n = 0.1) |>  
+  summary() |>
+  mean()
+
+
+# chamber 4 10fb
+
+Hsmr_10fb <- t4 |>
+  inspect(time= 3, oxygen = 58) |> 
+  subset_data(from = 38356,  
+              to = 39552,
+              by = "row") |>
+  
+  #extract rates
+  auto_rate.int(
+    starts = 900,  # 10 min measure + 5 min flush
+    wait = 120,    # 2 min
+    measure = 300, # 5 min
+    method = "lowest",
+    width = 180,   # extract lowest rate from a 3-min duration
+    by = "time") |>
+  
+  #Adjust the rates
+  adjust_rate(
+    by = bg_ch4,
+    method = "value") |>
+  
+  # convert
+  convert_rate(oxy.unit = "%Air", 
+               time.unit = "secs", 
+               output.unit = "mg/h/g", 
+               volume = 0.05673, 
+               t =25.1, S = 0, 
+               mass = 0.00054) |>
+  
+  # Select rate
+  select_rate(method = "lowest_percentile", n = 0.1) |>  
+  summary() |>
+  mean()
+
 # Trial 5----
 # Chamber 1 - 7ml
-Hsmr_7mL <- t5 |>  
+Hsmr_7ml <- t5 |>  
   inspect(time = 3, oxygen = 4) |>
   subset_data(from = 36882, 
               to = 38674, 
@@ -349,7 +631,7 @@ Hsmr_7mb <- t5 |>
   mean()
 
 # Chamber 3 7fb
-Hsmr_7Fb <- t5 |>
+Hsmr_7fb <- t5 |>
   inspect(time = 3, oxygen = 40) |>
   subset_data(from = 37025, 
               to = 38674, 
@@ -385,7 +667,7 @@ Hsmr_7Fb <- t5 |>
 
 # chamber 4 7fp
 
-Hsmr_7Fp <- t5 |>
+Hsmr_7fp <- t5 |>
   inspect(time = 3, oxygen = 58) |> 
   subset_data(from = 37025, 
               to = 38674, 
@@ -454,14 +736,14 @@ Hsmr_7mp <- t6 |>
   mean()
 
 # Chamber 2 7mg 
-Hsmr_7Mg <- t6 |>
+Hsmr_7mg <- t6 |>
   inspect(time = 3, oxygen = 22) |>
-  subset_data(from = 36821, 
-              to = 39004, 
+  subset_data(from = 37421, 
+              to = 38604, 
               by = "row") |>
   
   #extract rates
-  calc_rate.int(
+  auto_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
     wait = 240,    # 4 min
     measure = 600, # 10 min
@@ -488,7 +770,7 @@ Hsmr_7Mg <- t6 |>
   mean()
 
 # chamber 3 7fl
-Hsmr_7FL <-t6 |>
+Hsmr_7fl <-t6 |>
   inspect(time = 3, oxygen = 40) |> 
   subset_data(from = 36970, 
               to = 39004, 
@@ -628,12 +910,12 @@ Hsmr_5mp <- t7 |>
 # chamber 3 5ml
 Hsmr_5ml <-t7 |>
   inspect(time = 3, oxygen = 40) |> 
-  subset_data(from = 37320, 
+  subset_data(from = 37920, 
               to = 39100, 
               by = "row") |>
   
   #extract rates
-  calc_rate.int(
+  auto_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
     wait = 180,    # 3 min
     measure = 600, # 10 min
@@ -699,7 +981,7 @@ Hsmr_5fp <-t7 |>
 Hsmr_5mb <-t8|>  
   inspect(time = 3, oxygen = 4) |>
   subset_data(from = 36506, 
-              to = 39106, 
+              to = 38506, 
               by = "row") |>
   
   #extract rates
@@ -837,16 +1119,16 @@ Hsmr_5fg <-t8|>
 # chamber 1 9ml
 Hsmr_9ml <-t9|>  
   inspect(time = 3, oxygen = 4) |>
-  subset_data(from = 37415, 
+  subset_data(from = 38025, 
               to = 39200, 
               by = "row") |>
   
   
   #extract rates
-  calc_rate.int(
+  auto_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
-    wait = 120,    # 2 min
-    measure = 600, # 10 min
+    wait = 240,    # 2 min
+    measure = 540, # 10 min
     method = "lowest",
     width = 300,   # extract lowest rate from a 5-min duration
     by = "time") |>
@@ -978,12 +1260,12 @@ Hsmr_9fb <-t9|>
 Hsmr_9mb <-t10|>  
   inspect(time = 3, oxygen = 4) |>
   subset_data(from = 36567, 
-              to = 38781, 
+              to = 37901, 
               by = "row") |> 
   
   
   #extract rates
-  calc_rate.int(
+  auto_rate.int(
     starts = 900,  # 10 min measure + 5 min flush
     wait = 120,    # 2 min
     measure = 420, # 7 min
@@ -1086,12 +1368,12 @@ Hsmr_9fp <-t10|>
 Hsmr_4mb <-t11|>  
   inspect(time = 3, oxygen = 4) |>
   subset_data(from = 37480, 
-              to = 39608, 
+              to = 38608, 
               by = "row") |> 
   
   
   #extract rates
-  calc_rate.int(
+  auto_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
     wait = 120,    # 2 min
     measure = 600, # 10 min
@@ -1120,13 +1402,13 @@ Hsmr_4mb <-t11|>
 # chamber 2 4ml
 Hsmr_4ml <-t11|>
   inspect(time = 3, oxygen = 22) |>
-  subset_data(from = 37480, 
-              to = 39608, 
+  subset_data(from = 38080, 
+              to = 39208, 
               by = "row") |>
   
   
   #extract rates
-  calc_rate.int(
+  auto_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
     wait = 120,    # 2 min
     measure = 600, # 10 min
@@ -1369,7 +1651,7 @@ Hsmr_4fg <-t12|>
 Hsmr_12mp <-t13|>  
   inspect(time = 3, oxygen = 4) |>
   subset_data(from = 36785, 
-              to = 39174, 
+              to = 38574, 
               by = "row") |>
   
   
@@ -1582,7 +1864,7 @@ Hsmr_12fp <-t14|>
 Hsmr_3mp <-t15|>  
   inspect(time = 3, oxygen = 4) |>
   subset_data(from = 37394, 
-              to = 39188, 
+              to = 38588, #39188
               by = "row") |>
   
   
@@ -1867,7 +2149,7 @@ Hsmr_6mp <-t17|>
 Hsmr_6mg <-t17|>
   inspect(time = 3, oxygen = 22) |>
   subset_data(from = 34638, 
-              to = 36258, 
+              to = 35808, 
               by = "row") |>
   
   
@@ -2357,14 +2639,11 @@ Hsmr_1fb <-t20|>
   summary() |>
   mean()
 # Trial 21----
-
-# Trial 22----
-# Trial 23----
-#Chamber 1 8mb
-Hsmr_8mb <-t23|>  
-  inspect(time = 3, oxygen = 4) |>
-  subset_data(from = 33779, 
-              to = 36080, 
+#Chamber 1 11mb
+Hsmr_11mb <-t21|>  
+  inspect(time= 3, oxygen = 4) |>
+  subset_data(from = 31558, 
+              to = 33656, 
               by = "row") |>
   
   
@@ -2372,6 +2651,256 @@ Hsmr_8mb <-t23|>
   calc_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
     wait = 180,    # 3 min
+    measure = 600, # 10 min
+    method = "lowest",
+    width = 300,   # extract lowest rate from a 5-min duration
+    by = "time") |>
+  
+  #Adjust the rates
+  adjust_rate(
+    by = bg_t21_ch1,
+    method = "value") |>
+  
+  # convert
+  convert_rate(oxy.unit = "%Air", 
+               time.unit = "secs", 
+               output.unit = "mg/h/g", 
+               volume = 0.05425, 
+               t =25.6, S = 0, 
+               mass = 0.00008) |>
+  
+  # Select rate
+  select_rate(method = "lowest_percentile", n = 0.1) |>  # defined that our SMR is the mean of the lowest 10th percentile of the rates from each replicate
+  summary() |>
+  mean()
+
+# chamber 2 11ml
+Hsmr_11ml <-t21|>
+  inspect(time= 3, oxygen = 22) |>
+  subset_data(from = 31558, 
+              to = 33656, 
+              by = "row") |>
+  
+  
+  #extract rates
+  auto_rate.int(
+    starts = 1200,  # 15 min measure + 5 min flush
+    wait = 180,    # 3 min
+    measure = 600, # 10 min
+    method = "lowest",
+    width = 300,   # extract lowest rate from a 5-min duration
+    by = "time") |>
+  
+  #Adjust the rates
+  adjust_rate(
+    by = bg_t21_ch2,
+    method = "value") |>
+  
+  # convert
+  convert_rate(oxy.unit = "%Air", 
+               time.unit = "secs", 
+               output.unit = "mg/h/g", 
+               volume = 0.05476, 
+               t =25.6, S = 0, 
+               mass = 0.00014)|>
+  
+  # Select rate
+  select_rate(method = "lowest_percentile", n = 0.1) |>  # defined that our SMR is the mean of the lowest 10th percentile of the rates from each replicate
+  summary() |>
+  mean()
+
+# Chamber 3 11fb
+Hsmr_11fb <-t21|>
+  inspect(time= 3, oxygen = 40) |>
+  subset_data(from = 31558, 
+              to = 33656, 
+              by = "row") |>
+  
+  #extract rates
+  auto_rate.int(
+    starts = 900,  # 10 min measure + 5 min flush
+    wait = 120,    # 2 min
+    measure = 420, # 7 min
+    method = "lowest",
+    width = 300,   # extract lowest rate from a 5-min duration
+    by = "time") |>
+  
+  #Adjust the rates
+  adjust_rate(
+    by = bg_t21_ch3,
+    method = "value") |>
+  
+  # convert
+  convert_rate(oxy.unit = "%Air", 
+               time.unit = "secs", 
+               output.unit = "mg/h/g", 
+               volume = 0.05880, 
+               t =25.6, S = 0, 
+               mass = 0.00017) |>
+  
+  # Select rate
+  select_rate(method = "lowest_percentile", n = 0.1) |>  
+  summary() |>
+  mean()
+
+
+# chamber 4 1fp died
+
+# Trial 22----
+#Chamber 1 11mp
+Hsmr_11mp <-t22_hypo|>  
+  inspect(time= 3, oxygen = 4) |>
+  subset_data(from = 312, 
+              to = 2105, 
+              by = "row") |>
+  
+  
+  #extract rates
+  auto_rate.int(
+    starts = 1200,  # 15 min measure + 5 min flush
+    wait = 240,    # 4 min
+    measure = 600, # 10 min
+    method = "lowest",
+    width = 300,   # extract lowest rate from a 5-min duration
+    by = "time") |>
+  
+  #Adjust the rates
+  adjust_rate(
+    by = bg_t22_ch1,
+    method = "value") |>
+  
+  # convert
+  convert_rate(oxy.unit = "%Air", 
+               time.unit = "secs", 
+               output.unit = "mg/h/g", 
+               volume = 0.05421, 
+               t =25.2, S = 0, 
+               mass = 0.00012) |>
+  
+  # Select rate
+  select_rate(method = "lowest_percentile", n = 0.1) |>  # defined that our SMR is the mean of the lowest 10th percentile of the rates from each replicate
+  summary() |>
+  mean()
+
+# chamber 2 11mg
+Hsmr_11mg <-t22_hypo|>
+  inspect(time= 3, oxygen = 22) |>
+  subset_data(from = 312, 
+              to = 2105, 
+              by = "row") |>
+  
+  
+  #extract rates
+  auto_rate.int(
+    starts = 1200,  # 15 min measure + 5 min flush
+    wait = 180,    # 3 min
+    measure = 600, # 10 min
+    method = "lowest",
+    width = 300,   # extract lowest rate from a 5-min duration
+    by = "time") |>
+  
+  #Adjust the rates
+  adjust_rate(
+    by = bg_t22_ch2,
+    method = "value") |>
+  
+  # convert
+  convert_rate(oxy.unit = "%Air", 
+               time.unit = "secs", 
+               output.unit = "mg/h/g", 
+               volume = 0.05478, 
+               t =25.2, S = 0, 
+               mass = 0.00012)|>
+  
+  # Select rate
+  select_rate(method = "lowest_percentile", n = 0.1) |>  # defined that our SMR is the mean of the lowest 10th percentile of the rates from each replicate
+  summary() |>
+  mean()
+
+# Chamber 3 11fl
+Hsmr_11fl <-t22_hypo|>
+  inspect(time= 3, oxygen = 40) |>
+  subset_data(from = 312, 
+              to = 2105, 
+              by = "row") |>
+  
+  #extract rates
+  auto_rate.int(
+    starts = 900,  # 10 min measure + 5 min flush
+    wait = 120,    # 2 min
+    measure = 420, # 7 min
+    method = "lowest",
+    width = 300,   # extract lowest rate from a 5-min duration
+    by = "time") |>
+  
+  #Adjust the rates
+  adjust_rate(
+    by = bg_t22_ch3,
+    method = "value") |>
+  
+  # convert
+  convert_rate(oxy.unit = "%Air", 
+               time.unit = "secs", 
+               output.unit = "mg/h/g", 
+               volume = 0.05539, 
+               t =25.2, S = 0, 
+               mass = 0.00058) |>
+  
+  # Select rate
+  select_rate(method = "lowest_percentile", n = 0.1) |>  
+  summary() |>
+  mean()
+
+
+# chamber 4 11fg
+
+Hsmr_11fg <-t22_hypo|>
+  inspect(time= 3, oxygen = 58) |> 
+  subset_data(from = 312, 
+              to = 2105, 
+              by = "row") |>
+  
+  #extract rates
+  auto_rate.int(
+    starts = 900,  # 10 min measure + 5 min flush
+    wait = 120,    # 2 min
+    measure = 420, # 7 min
+    method = "lowest",
+    width = 300,   # extract lowest rate from a 5-min duration
+    by = "time") |>
+  
+  #Adjust the rates
+  adjust_rate(
+    by = bg_t22_ch4,
+    method = "value") |>
+  
+  # convert
+  convert_rate(oxy.unit = "%Air", 
+               time.unit = "secs", 
+               output.unit = "mg/h/g", 
+               volume = 0.05651, 
+               t =25.2, S = 0, 
+               mass = 0.00076) |>
+  
+  # Select rate
+  select_rate(method = "lowest_percentile", n = 0.1) |>  
+  summary() |>
+  mean()
+
+
+# Trial 23----
+#Chamber 1 8mb
+Hsmr_8mb <-t23|>  
+  inspect(time = 3, oxygen = 4) |>
+  subset_data(from = 34979, 
+              to = 36080, 
+              by = "row") |>
+  
+  
+  #extract rates
+  auto_rate.int(
+    starts = 1200,  # 15 min measure + 5 min flush
+    wait = 240,    # 3 min
     measure = 600, # 10 min
     method = "lowest",
     width = 300,   # extract lowest rate from a 5-min duration
@@ -2398,15 +2927,15 @@ Hsmr_8mb <-t23|>
 # chamber 2 8mg
 Hsmr_8mg <-t23|>
   inspect(time = 3, oxygen = 22) |>
-  subset_data(from = 33779, 
+  subset_data(from = 34379, 
               to = 36080, 
               by = "row") |>
   
   
   #extract rates
-  calc_rate.int(
+  auto_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
-    wait = 180,    # 3 min
+    wait = 240,    # 3 min
     measure = 600, # 10 min
     method = "lowest",
     width = 300,   # extract lowest rate from a 5-min duration

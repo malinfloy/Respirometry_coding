@@ -3,6 +3,7 @@
 
 mmr_n_func <-function(data,start,end,oxygen,plot_width,id,from,to,from1, 
                       rate_width,v,t,m, ...)
+  
   {rep_1 <- subset_data(data,
                       from = start,
                       to = end, 
@@ -76,8 +77,44 @@ Nmmr_2fp <- mmr_n_func(data = t2,start = 755,end = 1385,oxygen = 58,plot_widt=0.
                        v=0.05988,t=25,m=0.00045)
 
 # MMR Trial 3--------------------------------------------------------
+#chamber 1 10mb
+Nmmr_10mb <- mmr_n_func(data = t3,start = 486,end = 486+1020-150,oxygen = 4,plot_widt=0.15,
+                       id= nmmr_10mb, from= 30,to= 450,from1 =30,rate_width=0.15,
+                       v=0.05419,t=25.2,m=0.00014)
+
+#chamber 2 10mp
+Nmmr_10mp <- mmr_n_func(data = t3,start = 636,end = 636+870-150,oxygen = 22,plot_widt=0.15,
+                        id= nmmr_10mp, from= 30,to= 450,from1 =30,rate_width=0.15,
+                        v=0.05473,t=25.2,m=0.00017)
+
+#chamber 3 10mg
+Nmmr_10mg <- mmr_n_func(data = t3,start = 845,end = 845+660-150,oxygen = 40,plot_widt=0.15,
+                        id= nmmr_10mg, from= 30,to= 450,from1 =30,rate_width=0.15,
+                        v=0.05581,t=25.2,m=0.00016)
+#chamber 4 10fl
+Nmmr_10fl <- mmr_n_func(data = t3,start = 996,end = 996+570-150,oxygen = 58,plot_widt=0.2,
+                        id= nmmr_10fl, from= 30,to= 450,from1 =30,rate_width=0.2,
+                        v=0.05672,t=25.2,m=0.00055)
 
 # MMR Trial 4--------------------------------------------------------
+#chamber 1 10ml
+Nmmr_10ml <- mmr_n_func(data = t4,start = 363,end = 363+720-150,oxygen = 4,plot_widt=0.15,
+                        id= nmmr_10ml, from= 30,to= 450,from1 =30,rate_width=0.15,
+                        v=0.05420,t=24.7,m=0.00013)
+
+#chamber 2 10fp
+Nmmr_10fp <- mmr_n_func(data = t4,start = 484,end = 484+600-150,oxygen = 22,plot_widt=0.15,
+                        id= nmmr_10fp, from= 30,to= 450,from1 =30,rate_width=0.2,
+                        v=0.05447,t=24.7,m=0.00043)
+
+#chamber 3 10fg
+Nmmr_10fg <- mmr_n_func(data = t4,start = 1265,end = 1265+ 570 -150,oxygen = 40,plot_widt=0.15,
+                        id= nmmr_10fg, from= 30,to= 450,from1 =30,rate_width=0.2,
+                        v=0.05559,t=24.7,m=0.00038)
+#chamber 4 fb
+Nmmr_10fb <- mmr_n_func(data = t4,start = 1407,end = 1389+590-150,oxygen = 58,plot_widt=0.2,
+                        id= nmmr_10fb, from= 30,to= 300,from1 =30,rate_width=0.2,
+                        v=0.05673,t=24.7,m=0.00054)
 
 # MMR Trial 5----------------------------------------------------------------
 # Chamber 1 7ml
@@ -412,7 +449,45 @@ Nmmr_1fb <- mmr_n_func(data = t20,start = 823,end = 823 + 600 - 150,oxygen = 58,
 
 # MMR trial 21------------------------------------------------------------------
 
+# Chamber 1 11mb
+Nmmr_11mb <- mmr_n_func(data = t21,start = 64,end = 64 + 900 - 150,oxygen = 4,plot_widt= 0.15,
+                       id = nmmr_11mb, from= 30,to= 450,from1 = 30,rate_width= 0.15,
+                       v= 0.05425,t= 25.5,m= 0.00008)
+
+# Chamber 2 1ml
+Nmmr_11ml <- mmr_n_func(data = t21,start = 393,end =393 + 570 - 150,oxygen = 22,plot_widt= 0.15,
+                       id = nmmr_11ml, from= 30,to= 450,from1 = 30,rate_width= 0.15,
+                       v= 0.05476,t= 25.5,m= 0.00014)
+
+# Chamber 3 11fb
+Nmmr_11fb <- mmr_n_func(data = t21,start = 93,end = 93 + 870 - 150,oxygen = 40,plot_widt= 0.2,
+                       id = nmmr_1fb, from= 60,to= 510,from1 = 60,rate_width= 0.2,
+                       v= 0.05880,t= 25.5,m= 0.00017)
+
+# chamber 4 1fp died
+
+
 # MMR trial 22 -----------------------------------------------------------------
+
+# Chamber 1 11mp
+Nmmr_11mp <- mmr_n_func(data = t22,start = 392,end = 392 + 1020 - 150,oxygen = 4,plot_widt= 0.15,
+                        id = nmmr_11mp, from= 30,to= 450,from1 = 30,rate_width= 0.15,
+                        v= 0.05421,t= 24.6,m= 0.00012)
+
+# Chamber 2 11mg
+Nmmr_11mg <- mmr_n_func(data = t22,start = 750,end =750 + 660 - 150,oxygen = 22,plot_widt= 0.15,
+                        id = nmmr_11mg, from= 30,to= 450,from1 = 30,rate_width= 0.15,
+                        v= 0.05478,t= 24.6,m= 0.00012)
+
+# Chamber 3 11fl
+Nmmr_11fl <- mmr_n_func(data = t22,start = 450,end = 450 + 960 - 150,oxygen = 40,plot_widt= 0.2,
+                        id = nmmr_1fl, from= 60,to= 510,from1 = 60,rate_width= 0.2,
+                        v= 0.05539,t= 24.6,m= 0.00058)
+
+# chamber 4 11fg
+Nmmr_11fg <- mmr_n_func(data = t22,start = 811,end = 811 + 600 - 150,oxygen = 58,plot_widt= 0.2,
+                        id = nmmr_1fg, from= 60,to= 510,from1 = 60,rate_width= 0.2,
+                        v= 0.05651,t= 24.6,m= 0.00076)
 
 # MMR trial 23 -----------------------------------------------------------------
 # Chamber 1 8mb

@@ -71,8 +71,6 @@ id <- rep_1 |>
 }
 
 
-#needs to be fixed, wrong bg!! trial 1-4!!! now without bg!!!! and t10,13,14,17,21,22
-
 # MMR Trial 1----------------------------------------------------
 #chamber 1 2ml
 Hmmr_2ml <- mmr_h_func1(t1,39479,39479 + 600,4,0.15,Hmmr_2ml, 
@@ -115,8 +113,45 @@ Hmmr_2fp <- mmr_h_func1(data = t2,start = 40558,end = 40558 + 450,oxygen = 58,pl
                        v=0.05988,t=25.1,m=0.00045)
 
 # MMR Trial 3--------------------------------------------------------
+#chamber 1 10mb
+Hmmr_10mb <- mmr_h_func(data = t3_hypommr,start = 480,end = 1410,oxygen = 4,plot_widt=0.15,
+                        id= Hmmr_10mb, from= 30,to= 450,from1 =30,rate_width=0.15,bg_ch1,
+                        v=0.05419,t=25.2,m=0.00014)
+
+#chamber 2 10mp
+Hmmr_10mp <- mmr_h_func(data = t3_hypommr,start = 624,end = 1410,oxygen = 22,plot_widt=0.15,
+                        id= Hmmr_10mp, from= 30,to= 450,from1 =30,rate_width=0.15,bg_ch2,
+                        v=0.05473,t=25.2,m=0.00017)
+
+#chamber 3 10mg
+Hmmr_10mg <- mmr_h_func(data = t3_hypommr,start = 970,end = 1410,oxygen = 40,plot_widt=0.15,
+                        id= Hmmr_10mg, from= 30,to= 450,from1 =30,rate_width=0.15,bg_ch3,
+                        v=0.05581,t=25.2,m=0.00016)
+#chamber 4 10fl
+Hmmr_10fl <- mmr_h_func(data = t3_hypommr,start = 816,end = 1410,oxygen = 58,plot_widt=0.2,
+                        id= Hmmr_10fl, from= 30,to= 450,from1 =30,rate_width=0.2,bg_ch4,
+                        v=0.05672,t=25.2,m=0.00055)
 
 # MMR Trial 4--------------------------------------------------------
+
+#chamber 1 10ml
+Hmmr_10ml <- mmr_h_func(data = t4,start = 39950,end = 40875,oxygen = 4,plot_widt=0.15,
+                        id= Hmmr_10ml, from= 30,to= 450,from1 =30,rate_width=0.15,bg_ch1,
+                        v=0.05420,t=25.3,m=0.00013)
+
+#chamber 2 10fp
+Hmmr_10fp <- mmr_h_func(data = t4,start = 40431,end = 40875,oxygen = 22,plot_widt=0.15,
+                        id= Hmmr_10fp, from= 30,to= 450,from1 =30,rate_width=0.2,bg_ch2,
+                        v=0.05447,t=25.3,m=0.00043)
+
+#chamber 3 10fg
+Hmmr_10fg <- mmr_h_func(data = t4,start = 40310,end = 40875,oxygen = 40,plot_widt=0.15,
+                        id= Hmmr_10fg, from= 30,to= 450,from1 =30,rate_width=0.2,bg_ch3,
+                        v=0.05559,t=25.3,m=0.00038)
+#chamber 4 fb
+Hmmr_10fb <- mmr_h_func(data = t4,start = 40069,end = 40875,oxygen = 58,plot_widt=0.2,
+                        id= Hmmr_10fb, from= 30,to= 300,from1 =30,rate_width=0.2,bg_ch4,
+                        v=0.05673,t=25.3,m=0.00054)
 
 # MMR Trial 5----------------------------------------------------------------
 # Chamber 1 7ml
@@ -447,9 +482,45 @@ Hmmr_1fb <- mmr_h_func(data = t20,start = 45549,end = 45549 + 420,oxygen = 58,pl
                        v= 0.06005,t= 25.4,m= 0.00028)
 
 # MMR trial 21------------------------------------------------------------------
+# Chamber 1 11mb
+Hmmr_11mb <- mmr_h_func(data = t21,start = 34146,end = 34945,oxygen = 4,plot_widt= 0.15,
+                        id = Hmmr_11mb, from= 30,to= 450,from1 = 30,rate_width= 0.15,bg_t21_ch1,
+                        v= 0.05425,t= 25.5,m= 0.00008)
+
+# Chamber 2 1ml
+Hmmr_11ml <- mmr_h_func(data = t21,start = 34597,end =34945,oxygen = 22,plot_widt= 0.15,
+                        id = Hmmr_11ml, from= 30,to= 450,from1 = 30,rate_width= 0.15,bg_t21_ch2,
+                        v= 0.05476,t= 25.5,m= 0.00014)
+
+# Chamber 3 11fb
+Hmmr_11fb <- mmr_h_func(data = t21,start = 34243,end = 34945,oxygen = 40,plot_widt= 0.2,
+                        id = Hmmr_1fb, from= 60,to= 510,from1 = 60,rate_width= 0.2,bg_t21_ch3,
+                        v= 0.05880,t= 25.5,m= 0.00017)
+
+# chamber 4 1fp died
+
 
 # MMR trial 22 -----------------------------------------------------------------
 
+# Chamber 1 11mp
+Hmmr_11mp <- mmr_h_func(data = t22_hypo,start = 2899,end = 3758,oxygen = 4,plot_widt= 0.15,
+                        id = Hmmr_11mp, from= 30,to= 450,from1 = 30,rate_width= 0.15,bg_t22_ch1,
+                        v= 0.05421,t= 25.1,m= 0.00012)
+
+# Chamber 2 11mg
+Hmmr_11mg <- mmr_h_func(data = t22_hypo,start = 2983,end =3758,oxygen = 22,plot_widt= 0.15,
+                        id = Hmmr_11mg, from= 30,to= 450,from1 = 30,rate_width= 0.15,bg_t22_ch2,
+                        v= 0.05478,t= 25.1,m= 0.00012)
+
+# Chamber 3 11fl
+Hmmr_11fl <- mmr_h_func(data = t22_hypo,start = 3256,end = 3758,oxygen = 40,plot_widt= 0.2,
+                        id = Hmmr_1fl, from= 60,to= 510,from1 = 60,rate_width= 0.2,bg_t22_ch3,
+                        v= 0.05539,t= 25.1,m= 0.00058)
+
+# chamber 4 11fg
+Hmmr_11fg <- mmr_h_func(data = t22_hypo,start = 3347,end = 3758,oxygen = 58,plot_widt= 0.2,
+                        id = Hmmr_1fg, from= 60,to= 510,from1 = 60,rate_width= 0.2,bg_t22_ch4,
+                        v= 0.05651,t= 25.1,m= 0.00076)
 # MMR trial 23 -----------------------------------------------------------------
 # Chamber 1 8mb
 Hmmr_8mb <- mmr_h_func(data = t23,start = 36836,end = 36836 + 840,oxygen = 4,plot_widt= 0.15,

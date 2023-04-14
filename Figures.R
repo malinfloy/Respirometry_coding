@@ -5,40 +5,41 @@ SMR_df_all<- ls(pattern = "^[NH]smr_") |> set_names() |>
   map(get) |> 
   map(~pluck(.x,"rate.output") |> mean() |> round(digits = 3) |> abs()) |> 
   unlist() |> 
-  enframe( name = "Fish_ID", value = "mean_value") |> 
+  enframe( name = "Fish_ID", value = "Metabolic_rate") |> 
   mutate(Treatment = ifelse(str_detect(Fish_ID, "^N"), "Normoxic", "Hypoxic"),   
          Aquarium = str_extract(Fish_ID, "(?<=_)\\d{1,2}"),
          Fish_ID = str_extract(Fish_ID, "(?<=_)[^_]+$"), 
          Acclimation = ifelse(Aquarium %in% c(1,3,5,8,10,12), "Hypoxia", "Normoxia"),
-         Name = "SMR")
+         Measured = "SMR")
 
 MMR_df_all <- ls(pattern = "^[NH]mmr_") |> set_names() |> 
   map(get) |> 
   map(~pluck(.x,"rate.output") |> round(digits = 3) |> abs()) |> 
   unlist() |> 
-  enframe( name = "Fish_ID", value = "mean_value") |> 
+  enframe( name = "Fish_ID", value = "Metabolic_rate") |> 
   mutate(Treatment = ifelse(str_detect(Fish_ID, "^N"), "Normoxic", "Hypoxic"),
          Aquarium = str_extract(Fish_ID, "(?<=_)\\d{1,2}"),
          Fish_ID = str_extract(Fish_ID, "(?<=_)[^_]+$"), 
          Acclimation = ifelse(Aquarium %in% c(1,3,5,8,10,12), "Hypoxia", "Normoxia"),
-         Name = "MMR") 
+         Measured = "MMR") 
 
+mr_df <- rbind(MMR_df_all,SMR_df_all) 
 
 # Table for the master thesis
 metabolic_rate_table <-  mr_df |> 
-  pivot_wider(names_from = c("Name","Treatment"), values_from = "mean_value") |> 
+  pivot_wider(names_from = c("Measured","Treatment"), values_from = "Metabolic_rate") |> 
   distinct(Fish_ID, .keep_all = TRUE)
 
 
 # Codes for ggplots ------
 
-mr_df <- rbind(MMR_df_all,SMR_df_all) 
+
 
 
 # plot that shows the entire thing together
 ggplot(mr_df, aes( x = Treatment, 
-                   y = mean_value,
-                   fill = Name)) +
+                   y = Metabolic_rate,
+                   fill = Measured)) +
   geom_boxplot() +
   geom_jitter(width = 0.1, height = 0, alpha = 0.3) +
   scale_y_continuous(limits = c(0,1.5))+
@@ -54,7 +55,7 @@ ggplot(mr_df, aes( x = Treatment,
   
 #width = 0.1, height = 0, alpha = 0.3
 
-ggplot(mr_df ,aes(x = Treatment, y = mean_value, fill = Name)) +
+ggplot(mr_df ,aes(x = Treatment, y = Metabolic_rate, fill = Measured)) +
   geom_boxplot() +
   geom_jitter(width = 0.1, height = 0, alpha = 0.3) +
   #geom_line(aes(group = Name, x = Treatment)) + 
