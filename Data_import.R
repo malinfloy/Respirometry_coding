@@ -24,7 +24,11 @@ t3_hypommr <- import_file("Respirometry_data/Raw data/2022-10-03_081328_02_10_T3
 
 
 # trial 4
+library(lubridate)
 t4 <- import_file("Respirometry_data/Raw data/2022-10-03_101859_03_10_T4/T4.txt")
+t4$date_time_1 = dmy_hms(paste(t4$`Date [A Ch.1 Main]`, t4$`Time [A Ch.1 Main]`)) |>   
+  round_date("sec")
+t4$num_time_ch1 <- as.numeric(difftime(t4[[81]], t4[[1,81]], units = "secs"))
   
 # trial 5
 

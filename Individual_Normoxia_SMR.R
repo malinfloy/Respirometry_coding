@@ -112,7 +112,7 @@ Nsmr_2fl <- t1 |>
               by = "row") |>
   
   #extract rates
-  calc_rate.int(
+  auto_rate.int(
     starts = 900,  # 10 min measure + 5 min flush
     wait = 180,    # 3 min
     measure = 300, # 5 min
@@ -213,7 +213,7 @@ Nsmr_2fb <- t2 |>
               by = "row") |>
   
   #extract rates
-  calc_rate.int(
+  auto_rate.int(
     starts = 900,  # 10 min measure + 5 min flush
     wait = 120,    # 2 min
     measure = 420, # 7 min
@@ -248,7 +248,7 @@ Nsmr_2fp <- t2 |>
               by = "row") |>
   
   #extract rates
-  calc_rate.int(
+  auto_rate.int(
     starts = 900,  # 10 min measure + 5 min flush
     wait = 120,    # 2 min
     measure = 420, # 7 min
@@ -416,21 +416,21 @@ Nsmr_10fl <- t3 |>
   mean()
 
 # Trial 4----
-# Chamber 1 - 10mb
+# Chamber 1 - 10ml
 Nsmr_10ml <- t4 |>  
   inspect(time= 3, oxygen = 4) |>
   subset_data(from = 3035,  # begynner 12 pga rar lesing samme skjer uansett tid??
-              to = 33556, 
+              to = 32356, #556
               by = "row") |>
   
   
   #extract rates
-  auto_rate.int(
+  calc_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
-    wait = 240,    # 4 min
+    wait = 180,    # 4 min
     measure = 600, # 10 min
     method = "lowest",
-    width = 300,   # extract lowest rate from a 5-min duration
+    width = 300,   # extract lowest rate from a 4-min duration
     by = "time") |>
   
   #Adjust the rates
@@ -445,10 +445,10 @@ Nsmr_10ml <- t4 |>
     output.unit = "mg/h/g",
     volume = 0.05420,
     t = 24.7, S = 0,
-    mass = 0.00013) |>
+    mass = 0.00013)
   
   # Select rate
-  select_rate(method = "lowest_percentile", n = 0.1) |>  # defined that our SMR is the mean of the lowest 10th percentile of the rates from each replicate
+Nsmr_10ml <- select_rate(Nsmr_10ml, method = "lowest_percentile", n = 0.1) |>  # defined that our SMR is the mean of the lowest 10th percentile of the rates from each replicate
   summary() |>
   mean()  
 
@@ -456,12 +456,12 @@ Nsmr_10ml <- t4 |>
 # chamber 2 10fp
 Nsmr_10fp <- t4 |>
   inspect(time=3, oxygen = 22) |>
-  subset_data(from = 3035, 
-              to = 33556, 
+  subset_data(from = 3065, 
+              to = 33406, #556
               by = "row") |>
   
   #extract rates
-  calc_rate.int(
+  auto_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
     wait = 240,    # 4 min
     measure = 600, # 10 min
@@ -491,13 +491,13 @@ Nsmr_10fp <- t4 |>
 Nsmr_10fg <- t4 |>
   inspect(time= 3, oxygen = 40) |>
   subset_data(from = 1985, 
-              to = 33556,  
+              to = 31756,  
               by = "row") |>
   
   #extract rates
-  calc_rate.int(
+  auto_rate.int(
     starts = 900,  # 10 min measure + 5 min flush
-    wait = 120,    # 2 min
+    wait = 180,    # 3 min
     measure = 300, # 5 min
     method = "lowest",
     width = 180,   # extract lowest rate from a 3-min duration
@@ -514,10 +514,10 @@ Nsmr_10fg <- t4 |>
                output.unit = "mg/h/g", 
                volume = 0.05559, 
                t =24.7, S = 0, 
-               mass = 0.00038) |>
+               mass = 0.00038)
   
   # Select rate
-  select_rate(method = "lowest_percentile", n = 0.1) |>  
+Nsmr_10fg<- select_rate(Nsmr_10fg,method = "lowest_percentile", n = 0.1) |>  
   summary() |>
   mean()
 
@@ -526,14 +526,14 @@ Nsmr_10fg <- t4 |>
 
 Nsmr_10fb <- t4 |>
   inspect(time= 3, oxygen = 58) |> 
-  subset_data(from = 1985, 
+  subset_data(from = 1985, #1985, # 4286
               to = 33556,
               by = "row") |>
   
   #extract rates
   auto_rate.int(
     starts = 900,  # 10 min measure + 5 min flush
-    wait = 120,    # 2 min
+    wait = 180,    # 2 min
     measure = 300, # 5 min
     method = "lowest",
     width = 180,   # extract lowest rate from a 3-min duration
@@ -550,10 +550,10 @@ Nsmr_10fb <- t4 |>
                output.unit = "mg/h/g", 
                volume = 0.05673, 
                t =24.7, S = 0, 
-               mass = 0.00054) |>
+               mass = 0.00054)
   
   # Select rate
-  select_rate(method = "lowest_percentile", n = 0.1) |>  
+Nsmr_10fb <- select_rate(Nsmr_10fb,method = "lowest_percentile", n = 0.1) |>  
   summary() |>
   mean()
 
@@ -633,11 +633,11 @@ Nsmr_7mb <- t5 |>
 Nsmr_7fb <- t5 |>
   inspect(time= 3, oxygen = 40) |>
   subset_data(from = 1477, 
-              to = 32900, # 70 cycles after 
+              to = 32900, # 70 cycles after  # weird rep at 41 and 1-8
               by = "row") |>
   
   #extract rates
-  auto_rate.int(
+  calc_rate.int(
     starts = 900,  # 10 min measure + 5 min flush
     wait = 120,    # 2 min
     measure = 300, # 5 min
@@ -656,10 +656,10 @@ Nsmr_7fb <- t5 |>
                output.unit = "mg/h/g", 
                volume = 0.05912, 
                t =24.9, S = 0, 
-               mass = 0.00021) |>
+               mass = 0.00021) 
   
   # Select rate
-  select_rate(method = "lowest_percentile", n = 0.1) |>  
+  Nsmr_7fb <- select_rate(Nsmr_7fb,method = "lowest_percentile", n = 0.1) |>  
   summary() |>
   mean()
 
@@ -1511,13 +1511,13 @@ Nsmr_4fb <-t11|>
 #Chamber 1 4mp
 Nsmr_4mp <-t12|>  
   inspect(time= 3, oxygen = 4) |>
-  subset_data(from = 1575, 
+  subset_data(from = 15975,#1575 
               to = 33500, 
               by = "row") |>
   
   
   #extract rates
-  auto_rate.int(
+  calc_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
     wait = 120,    # 2 min
     measure = 600, # 10 min
@@ -1536,10 +1536,10 @@ Nsmr_4mp <-t12|>
                output.unit = "mg/h/g", 
                volume = 0.05648, 
                t =24.8, S = 0, 
-               mass = 0.00009) |>
+               mass = 0.00009)
   
   # Select rate
-  select_rate(method = "lowest_percentile", n = 0.1) |>  # defined that our SMR is the mean of the lowest 10th percentile of the rates from each replicate
+Nsmr_4mp<- select_rate(Nsmr_4mp, method = "lowest_percentile", n = 0.1) |>  # defined that our SMR is the mean of the lowest 10th percentile of the rates from each replicate
   summary() |>
   mean()
 

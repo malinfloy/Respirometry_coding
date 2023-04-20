@@ -5,13 +5,13 @@
 # Chamber 1 - 2ml
 Hsmr_2ml <- t1 |>  
   inspect(time = 3, oxygen = 4) |>
-  subset_data(from = 3430,   
-              to = 33400, 
+  subset_data(from = 37686,   
+              to = 38880, 
               by = "row") |>
   
   
   #extract rates
-  auto_rate.int(
+  calc_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
     wait = 240,    # 4 min
     measure = 480, # 8 min
@@ -28,7 +28,7 @@ Hsmr_2ml <- t1 |>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05643, 
-               t =25.6, S = 0, 
+               t =25, S = 0, 
                mass = 0.00014) |>
   
   # Select rate
@@ -61,7 +61,7 @@ Hsmr_2mg <- t1 |>
                time.unit = "secs", 
                output.unit = "mg/h/g", 
                volume = 0.05760, 
-               t =25.6, S = 0, 
+               t =25, S = 0, 
                mass = 0.00007) |>
   
   # Select rate
@@ -279,7 +279,7 @@ Hsmr_2fp <- t2 |>
 # Chamber 1 - 10mb
 Hsmr_10mb <- t3 |>  
   inspect(time= 3, oxygen = 4) |>
-  subset_data(from = 38250, 
+  subset_data(from = 37650, 
               to = 38847, 
               by = "row") |>
   
@@ -291,7 +291,7 @@ Hsmr_10mb <- t3 |>
     measure = 600, # 10 min
     method = "lowest",
     width = 300,   # extract lowest rate from a 5-min duration
-    by = "time") |>
+    by = "time") |> 
   
   #Adjust the rates
   adjust_rate(
@@ -305,10 +305,10 @@ Hsmr_10mb <- t3 |>
     output.unit = "mg/h/g",
     volume = 0.05419,
     t = 25.2, S = 0,
-    mass = 0.00014) |>
+    mass = 0.00014)
   
   # Select rate
-  select_rate(method = "lowest_percentile", n = 0.1) |>  # defined that our SMR is the mean of the lowest 10th percentile of the rates from each replicate
+Hsmr_10mb<- select_rate(Hsmr_10mb,method = "lowest_percentile", n = 0.1) |>  # defined that our SMR is the mean of the lowest 10th percentile of the rates from each replicate
   summary() |>
   mean()  
 
@@ -316,7 +316,7 @@ Hsmr_10mb <- t3 |>
 # chamber 2 10mp
 Hsmr_10mp <- t3 |>
   inspect(time=3, oxygen = 22) |>
-  subset_data(from = 38250, 
+  subset_data(from = 37650, 
               to = 38847, 
               by = "row") |>
   
@@ -340,7 +340,7 @@ Hsmr_10mp <- t3 |>
                output.unit = "mg/h/g", 
                volume = 0.05473, 
                t =25.2, S = 0, 
-               mass = 0.00017) |>
+               mass = 0.00017) |> 
   
   # Select rate
   select_rate(method = "lowest_percentile", n = 0.1) |>  # defined that our SMR is the mean of the lowest 10th percentile of the rates from each replicate
@@ -705,11 +705,11 @@ Hsmr_7fp <- t5 |>
 # Chamber 1 7mp
 Hsmr_7mp <- t6 |>
   inspect(time = 3, oxygen = 4) |> 
-  subset_data(from = 36657, 
+  subset_data(from = 37857, 
               to = 39004, 
               by = "row") |>
   #extract rates
-  auto_rate.int(
+  calc_rate.int(
     starts = 1200,  # 15 min measure + 5 min flush
     wait = 240,    # 4 min
     measure = 600, # 10 min
@@ -728,10 +728,10 @@ Hsmr_7mp <- t6 |>
                output.unit = "mg/h/g", 
                volume = 0.05640, 
                t =25.9, S = 0, 
-               mass = 0.00017) |>
+               mass = 0.00017)
   
   # Select rate
-  select_rate(method = "lowest_percentile", n = 0.1) |>  
+Hsmr_7mp<- select_rate(Hsmr_7mp,method = "lowest_percentile", n = 0.1) |>  
   summary() |>
   mean()
 
@@ -1758,7 +1758,7 @@ Hsmr_12fb <-t13|>
 Hsmr_12ml <-t14|>  
   inspect(time = 3, oxygen = 4) |>
   subset_data(from = 36841, 
-              to = 39096, 
+              to = 37896, 
               by = "row") |>
   
   
@@ -1781,10 +1781,10 @@ Hsmr_12ml <-t14|>
                output.unit = "mg/h/g", 
                volume = 0.05645, 
                t =24.6, S = 0, 
-               mass = 0.00012) |>
+               mass = 0.00012)
   
   # Select rate
-  select_rate(method = "lowest_percentile", n = 0.1) |>  # defined that our SMR is the mean of the lowest 10th percentile of the rates from each replicate
+Hsmr_12ml<- select_rate(Hsmr_12ml,method = "lowest_percentile", n = 0.1) |>  # defined that our SMR is the mean of the lowest 10th percentile of the rates from each replicate
   summary() |>
   mean()
 
